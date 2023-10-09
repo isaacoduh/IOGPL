@@ -1,1 +1,67 @@
 # IOGPL
+
+IOGPL 
+
+Specification Sheet:
+- v1
+	- Basic Graphical Interface:
+		- Window Form that can accept a single command
+		- Window form area that can receive a complete program
+		- Window for area for graphical program output.
+		- Window form should have a button to run a program
+		- The Graphical interface should be able to perform syntax check.
+	- Command Parser Class:
+		- Reads and execute commands in a command line one at a time
+		- Reads a program (In the program window) and executes it with a "run" command (typed into the command line)
+		- Saves and loads a program to a text file
+		- Syntax checker
+			- Checks for valid commands
+			- Checks for valid parameters
+			- Any invalid results should be reported using exceptions 
+	- Basic Drawing Command (case insensitive):
+		- Each command should is considered functional if: 
+			- at least one commit with good description
+			- full XML documentation
+			- a Unit Test
+			- XML Documentation for the Unit Test
+			- At least one commit for Unit Test
+		- Command List:
+			- Position Pen (moveTo)
+			- Pen Draw (drawTo)
+			- Clear Command to Clear the drawing area
+			- Reset Command to move pen to initial position at the top left of the screen
+			- Draw basic shapes:
+				- rectangle <width>, <height>
+				- circle <radius>
+				- triangle (any parameters)
+			- Colors and Fills
+				- pen <color> e.g pen red, or pen green (three or four colors)
+				- fill <on/off> e.g. fill on, make subsequent shape operations filled and not outline
+
+## Notes: All External libraries must be acknowledged (AI or Stackoverflow or Third Party Code)
+
+- v2:
+	- Programming Commands
+		- Variables: allow variables to be used in loop to determine the number of iterations and as parameters to draw commands
+		- If statement: an if statement should have a condition and associated "endif" which denotes the end of a block
+		- Loop Command: repeats everything within a loop on the first line and 'endloop' on a later line
+	- Syntax Checking:
+		- Syntax of the program is checked before the program is run and reported appropriately. This should be implemented using exceptions:
+		- Exception should be thrown using a custom exception class and throw an object of that class passing an appropriate message object to each layer of the code.
+	- Methods:
+		- # method myMethod (parameter list):
+		-	# line 1
+		-	# etc
+		- # endmethod
+		- call a method with: myMethod(<parameter list>)
+	- Multiple Programs:
+		- allows user to have two program windows and run seperate programs that output to the same output window
+		- in order to do this: threads would be required and allow thread safe access to a single canvas
+
+	- Design and Implementation Standard:
+		- use of factory patterns - factory class: all user created objects from class should use appropriate inheritance but should use the factory design pattern. 
+		- it should be fairly straight forward to add additional classes to the factory
+
+		# use additional design patterns
+	- Additional functionality:
+		- transform or rotate shape, more complex shapes or drawing or shapes
