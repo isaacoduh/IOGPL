@@ -28,90 +28,90 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.runBtn = new System.Windows.Forms.Button();
+            this.syntaxBtn = new System.Windows.Forms.Button();
+            this.pBox = new System.Windows.Forms.PictureBox();
+            this.rTextBox = new System.Windows.Forms.RichTextBox();
+            this.txtBox = new System.Windows.Forms.TextBox();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.loadBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // runBtn
             // 
-            this.button1.Location = new System.Drawing.Point(255, 406);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.runBtn.Location = new System.Drawing.Point(268, 406);
+            this.runBtn.Name = "runBtn";
+            this.runBtn.Size = new System.Drawing.Size(75, 36);
+            this.runBtn.TabIndex = 0;
+            this.runBtn.Text = "Run";
+            this.runBtn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // syntaxBtn
             // 
-            this.button2.Location = new System.Drawing.Point(349, 406);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.syntaxBtn.Location = new System.Drawing.Point(349, 406);
+            this.syntaxBtn.Name = "syntaxBtn";
+            this.syntaxBtn.Size = new System.Drawing.Size(75, 36);
+            this.syntaxBtn.TabIndex = 1;
+            this.syntaxBtn.Text = "Syntax";
+            this.syntaxBtn.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // pBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(454, 40);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(416, 389);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.pBox.Location = new System.Drawing.Point(454, 40);
+            this.pBox.Name = "pBox";
+            this.pBox.Size = new System.Drawing.Size(416, 389);
+            this.pBox.TabIndex = 2;
+            this.pBox.TabStop = false;
             // 
-            // richTextBox1
+            // rTextBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 66);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(412, 302);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.rTextBox.Location = new System.Drawing.Point(12, 66);
+            this.rTextBox.Name = "rTextBox";
+            this.rTextBox.Size = new System.Drawing.Size(412, 302);
+            this.rTextBox.TabIndex = 3;
+            this.rTextBox.Text = "";
             // 
-            // textBox1
+            // txtBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 374);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(412, 26);
-            this.textBox1.TabIndex = 4;
+            this.txtBox.Location = new System.Drawing.Point(12, 374);
+            this.txtBox.Name = "txtBox";
+            this.txtBox.Size = new System.Drawing.Size(412, 26);
+            this.txtBox.TabIndex = 4;
             // 
-            // button3
+            // saveBtn
             // 
-            this.button3.Location = new System.Drawing.Point(12, 37);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.saveBtn.Location = new System.Drawing.Point(12, 26);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(75, 34);
+            this.saveBtn.TabIndex = 5;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // loadBtn
             // 
-            this.button4.Location = new System.Drawing.Point(94, 37);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.loadBtn.Location = new System.Drawing.Point(93, 26);
+            this.loadBtn.Name = "loadBtn";
+            this.loadBtn.Size = new System.Drawing.Size(75, 34);
+            this.loadBtn.TabIndex = 6;
+            this.loadBtn.Text = "Load";
+            this.loadBtn.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(882, 539);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.loadBtn);
+            this.Controls.Add(this.saveBtn);
+            this.Controls.Add(this.txtBox);
+            this.Controls.Add(this.rTextBox);
+            this.Controls.Add(this.pBox);
+            this.Controls.Add(this.syntaxBtn);
+            this.Controls.Add(this.runBtn);
             this.Name = "Form1";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Text = "IO Graphical Language";
+            ((System.ComponentModel.ISupportInitialize)(this.pBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,12 +119,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button runBtn;
+        private System.Windows.Forms.Button syntaxBtn;
+        private System.Windows.Forms.PictureBox pBox;
+        private System.Windows.Forms.RichTextBox rTextBox;
+        private System.Windows.Forms.TextBox txtBox;
+        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button loadBtn;
     }
 }
