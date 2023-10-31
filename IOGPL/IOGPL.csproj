@@ -39,6 +39,7 @@
     <Content Include="Spec.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
