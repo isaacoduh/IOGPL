@@ -58,6 +58,7 @@
             // 
             // pBox
             // 
+            this.pBox.BackColor = System.Drawing.Color.LightGray;
             this.pBox.Location = new System.Drawing.Point(454, 40);
             this.pBox.Name = "pBox";
             this.pBox.Size = new System.Drawing.Size(416, 389);
