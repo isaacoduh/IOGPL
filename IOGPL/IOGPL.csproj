@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ActionParser.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="CommandParser.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
