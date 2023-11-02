@@ -10,18 +10,29 @@ namespace IOGPL
 {
     public class MoveTo : Command
     {
-        private int m_x;
-        private int m_y;
+        private PictureBox pictureBox;
+        private int m_x, m_y;
 
-        public MoveTo(PictureBox pictureBox, int x, int y) : base(pictureBox)
+        public MoveTo(PictureBox pictureBox, int targetX, int targetY) : base(pictureBox)
         {
-            m_x = x;
-            m_y = y;
+           this.m_x = targetX;
+            this.m_y = targetY;
+            this.pictureBox = pictureBox;
+           
         }
 
         public override void Execute()
         {
-            setCurrentPosition(m_x, m_y);
+           pictureBox.Image?.Dispose();
+            Bitmap updatedImage = new Bitmap(pictureBox.Width, pictureBox.Height);
+            using (Graphics g = Graphics.FromImage(updatedImage))
+            {
+                // Draw the new ellipse at the target position
+                g.FillEllipse(Brushes.Black, m_x, m_y, 5, 5);
+
+            }
+
+            pictureBox.Image = updatedImage;
         }
 
     }

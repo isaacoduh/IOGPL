@@ -23,7 +23,6 @@ namespace IOGPL
         public Command(PictureBox pictureBox)
         {
             m_pictureBox = pictureBox;
-            /*SetupPictureBox();*//**/
         }
 
         protected void SetupPictureBox()
@@ -49,26 +48,7 @@ namespace IOGPL
         public void setCurrentPosition(int x, int y)
         {
             m_currentX = x;
-            m_currentY = y;
-
-            
+            m_currentY = y; 
         }
-
-        /*public void InitializeOffScreenBuffer()
-        {
-            if(bmp != null)
-            {
-                bmp.Dispose();
-            }
-            bmp = new Bitmap(m_pictureBox.Width, m_pictureBox.Height);
-            g = Graphics.FromImage(bmp);
-        }
-
-        protected void RedrawPictureBox()
-        {
-            InitializeOffScreenBuffer();
-
-            m_pictureBox.Image = bmp;
-        }*/
     }
 }

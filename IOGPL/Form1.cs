@@ -30,12 +30,14 @@ namespace IOGPL
         public Form1()
         {
             InitializeComponent();
-            // Create a blank bitmap with the same size as the PictureBox
-            //Bitmap blankImage = new Bitmap(pBox.Width, pBox.Height);
 
-            // Initialize the PictureBox's Image property with the blank image
-            //pBox.Image = blankImage;
+            Command m = new MoveTo(pBox, defaultX, defaultY);
+            m.Execute();
             
+            /*ICommand moveToCommand = new MoveToCommand(pBox, defaultX, defaultY);
+            processor.SetCommand(moveToCommand);
+            processor.ExecuteCommand();*/
+
 
         }
 
@@ -58,9 +60,9 @@ namespace IOGPL
                             var moveToCmd = new MoveTo(pBox, x, y);
                             moveToCmd.Execute();
 
-                            ICommand moveToCommand = new MoveToCommand(pBox, x, y);
+                            /*ICommand moveToCommand = new MoveToCommand(pBox, x, y);
                             processor.SetCommand(moveToCommand);
-                            processor.ExecuteCommand();
+                            processor.ExecuteCommand();*/
                         }
                         break;
                         // Handle other command cases
