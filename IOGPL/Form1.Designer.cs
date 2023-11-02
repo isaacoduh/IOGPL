@@ -32,7 +32,7 @@
             this.syntaxBtn = new System.Windows.Forms.Button();
             this.pBox = new System.Windows.Forms.PictureBox();
             this.rTextBox = new System.Windows.Forms.RichTextBox();
-            this.txtBox = new System.Windows.Forms.TextBox();
+            this.cmdTxtBox = new System.Windows.Forms.TextBox();
             this.saveBtn = new System.Windows.Forms.Button();
             this.loadBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).BeginInit();
@@ -73,12 +73,13 @@
             this.rTextBox.TabIndex = 3;
             this.rTextBox.Text = "";
             // 
-            // txtBox
+            // cmdTxtBox
             // 
-            this.txtBox.Location = new System.Drawing.Point(12, 374);
-            this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(412, 26);
-            this.txtBox.TabIndex = 4;
+            this.cmdTxtBox.Location = new System.Drawing.Point(12, 374);
+            this.cmdTxtBox.Name = "cmdTxtBox";
+            this.cmdTxtBox.Size = new System.Drawing.Size(412, 26);
+            this.cmdTxtBox.TabIndex = 4;
+            this.cmdTxtBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmdTxtBox_KeyPress);
             // 
             // saveBtn
             // 
@@ -105,13 +106,14 @@
             this.ClientSize = new System.Drawing.Size(882, 539);
             this.Controls.Add(this.loadBtn);
             this.Controls.Add(this.saveBtn);
-            this.Controls.Add(this.txtBox);
+            this.Controls.Add(this.cmdTxtBox);
             this.Controls.Add(this.rTextBox);
             this.Controls.Add(this.pBox);
             this.Controls.Add(this.syntaxBtn);
             this.Controls.Add(this.runBtn);
             this.Name = "Form1";
             this.Text = "IO Graphical Language";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -124,7 +126,7 @@
         private System.Windows.Forms.Button syntaxBtn;
         private System.Windows.Forms.PictureBox pBox;
         private System.Windows.Forms.RichTextBox rTextBox;
-        private System.Windows.Forms.TextBox txtBox;
+        private System.Windows.Forms.TextBox cmdTxtBox;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button loadBtn;
     }

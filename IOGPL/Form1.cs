@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,34 +13,69 @@ namespace IOGPL
 {
     public partial class Form1 : Form
     {
-        private Bitmap bitmap;
-        private Graphics graphics;
-        private Point cursorInitialPosition = new Point(5,5);
+        // Default cursor position
+        //private int defaultX = 5;
+        //private int defaultY = 5;
+        //private Bitmap bitmap;
+        //private Graphics graphics;
+        
+
+        
+        private int defaultX = 5;
+        private int defaultY = 5;
+
+        private CommandProcessor processor = new CommandProcessor();
+
+
         public Form1()
         {
             InitializeComponent();
-            InitializeGraphics();
+            // Create a blank bitmap with the same size as the PictureBox
+            //Bitmap blankImage = new Bitmap(pBox.Width, pBox.Height);
+
+            // Initialize the PictureBox's Image property with the blank image
+            //pBox.Image = blankImage;
+            
+
         }
 
-
-
-        /// <summary>
-        /// Initializes the graphics and sets up the initial display.
-        /// </summary>
-        /// <remarks>
-        /// This method creates a Bitmap and Graphics object for off-screen drawing
-        /// to maintain the graphical state. It clears the off-screen bitmap with a
-        /// white background and draws a red point (cursor) at coordinates (5, 5).
-        /// The PictureBox is updated to display the off-screen bitmap, setting up the
-        /// initial cursor position.
-        /// </remarks>
-        private void InitializeGraphics()
+        private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            bitmap = new Bitmap(pBox.Width, pBox.Height);
-            graphics = Graphics.FromImage(bitmap);
+            if(e.KeyChar ==(char)Keys.Enter)
+            {
+                string inputCommand = cmdTxtBox.Text;
+                ActionParser parser = new ActionParser();
+                parser.Parse(inputCommand);
 
-            graphics.FillEllipse(Brushes.Red, cursorInitialPosition.X - 2, cursorInitialPosition.Y - 2, 5, 5);
-            pBox.Image = bitmap;
+                string action = parser.Action;
+                string[] tokens = parser.Tokens;
+
+                switch (action)
+                {
+                    case "moveto":
+                        if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
+                        {
+                            var moveToCmd = new MoveTo(pBox, x, y);
+                            moveToCmd.Execute();
+
+                            ICommand moveToCommand = new MoveToCommand(pBox, x, y);
+                            processor.SetCommand(moveToCommand);
+                            processor.ExecuteCommand();
+                        }
+                        break;
+                        // Handle other command cases
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            /*using(Graphics g = Graphics.FromImage(pBox.Image))
+            {
+                g.FillEllipse(Brushes.Black, defaultX, defaultY, 5, 5);
+            }*/
+
+            //pBox.Invalidate();
         }
     }
 }
