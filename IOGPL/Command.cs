@@ -36,8 +36,6 @@ namespace IOGPL
             };
         }
 
-
-
         public abstract void Execute();
 
         protected void RerenderPictureBox()

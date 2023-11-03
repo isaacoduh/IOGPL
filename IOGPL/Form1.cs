@@ -66,6 +66,18 @@ namespace IOGPL
                                     moveToCmd.Execute();
                                 }
                                 break;
+                            case "drawto":
+                                if (tokens.Length == 2
+                                    && int.TryParse(tokens[0], out int endx)
+                                    && int.TryParse(tokens[1], out int endy)
+
+                                 )
+                                {
+                                    var drawToCmd = new DrawTo(pBox, defaultX, defaultY, endx, endy);
+                                    drawToCmd.Execute();
+
+                                }
+                                break;
                                 // Handle other command cases
                         }
                     }
@@ -86,7 +98,19 @@ namespace IOGPL
                                 var moveToCmd = new MoveTo(pBox, x, y);
                                 moveToCmd.Execute();
                             }
-                            break;
+                        break;
+                        case "drawto":
+                            if(tokens.Length == 2
+                                && int.TryParse(tokens[0], out int endx)
+                                && int.TryParse(tokens[1], out int endy)
+                                
+                             )
+                            {
+                                var drawToCmd = new DrawTo(pBox, defaultX, defaultY, endx, endy);
+                                drawToCmd.Execute();
+
+                            }
+                        break;
                             // Handle other command cases
                     }
                 }
