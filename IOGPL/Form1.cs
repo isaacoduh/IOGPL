@@ -46,7 +46,7 @@ namespace IOGPL
             if(e.KeyChar ==(char)Keys.Enter)
             {
                 string inputCommand = cmdTxtBox.Text;
-                ActionParser parser = new ActionParser();
+                CommandParser parser = new CommandParser();
                 parser.Parse(inputCommand);
 
                 string action = parser.Action;
@@ -59,10 +59,6 @@ namespace IOGPL
                         {
                             var moveToCmd = new MoveTo(pBox, x, y);
                             moveToCmd.Execute();
-
-                            /*ICommand moveToCommand = new MoveToCommand(pBox, x, y);
-                            processor.SetCommand(moveToCommand);
-                            processor.ExecuteCommand();*/
                         }
                         break;
                         // Handle other command cases

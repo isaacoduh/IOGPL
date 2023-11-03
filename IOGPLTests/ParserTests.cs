@@ -2,12 +2,8 @@ using IOGPL;
 namespace IOGPLTests
 {
     [TestClass]
-    public class UnitTest1
+    public class ParserTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
 
         [TestMethod]
         public void Parse_ValidMovetoCommand()
@@ -22,6 +18,17 @@ namespace IOGPLTests
             Assert.AreEqual("moveto", parser.Action);
             CollectionAssert.AreEqual(new string[] { "100", "100" }, parser.Tokens);
 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCommandException))]
+        public void Parse_InvalidMoveToCommand()
+        {
+            // Arrange
+            var parser = new CommandParser();
+
+            // Act
+            parser.Parse("movto 100,100");
         }
     }
 }

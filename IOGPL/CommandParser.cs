@@ -14,6 +14,12 @@ namespace IOGPL
 
         }
     }
+
+    public class InvalidCommandException : Exception
+    {
+        public InvalidCommandException() { }
+        public InvalidCommandException(string message) : base(message) { }
+    }
     public class CommandParser
     {
         public string Action { get; set; }
@@ -25,10 +31,26 @@ namespace IOGPL
             if (parts.Length >= 1)
             {
                 Action = parts[0];
-                Tokens = parts[1].Split(',');
+                
 
                 // check the action the its associated token count
+                if(IsValidCommand(Action, parts[1].Split(',').Length))
+                {
+                    if(parts.Length > 1)
+                    {
+                        Tokens = parts[1].Split(',');
+                    } else
+                    {
+                        Tokens = new string[0];
+                    }
+                } else
+                {
+                    throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                }
                 
+            } else
+            {
+                throw new InvalidCommandException("Invalid command format. Expected 'action tokens'.");
             }
 
         }
