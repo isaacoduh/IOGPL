@@ -66,7 +66,8 @@ namespace IOGPL
                 {"rect", 4 },
                 {"triangle", 4 },
                 {"clear", 0 },
-                {"reset", 0 }
+                {"reset", 0 },
+                {"run", 0 }
             };
             if(validCommands.ContainsKey(action.ToLower())) 
             {

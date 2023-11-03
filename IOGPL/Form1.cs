@@ -45,24 +45,54 @@ namespace IOGPL
         {
             if(e.KeyChar ==(char)Keys.Enter)
             {
-                string inputCommand = cmdTxtBox.Text;
-                CommandParser parser = new CommandParser();
-                parser.Parse(inputCommand);
-
-                string action = parser.Action;
-                string[] tokens = parser.Tokens;
-
-                switch (action)
+                if (cmdTxtBox.Text == "run")
                 {
-                    case "moveto":
-                        if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
+                    Console.WriteLine("Run Command Called");
+                    foreach(string input in rTextBox.Lines)
+                    {
+                        Console.WriteLine($"{input} \n");
+                        CommandParser parser = new CommandParser();
+                        parser.Parse(input);
+
+                        string action = parser.Action;
+                        string[] tokens = parser.Tokens;
+
+                        switch (action)
                         {
-                            var moveToCmd = new MoveTo(pBox, x, y);
-                            moveToCmd.Execute();
+                            case "moveto":
+                                if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
+                                {
+                                    var moveToCmd = new MoveTo(pBox, x, y);
+                                    moveToCmd.Execute();
+                                }
+                                break;
+                                // Handle other command cases
                         }
-                        break;
-                        // Handle other command cases
+                    }
+                } else
+                {
+                    string inputCommand = cmdTxtBox.Text;
+                    CommandParser parser = new CommandParser();
+                    parser.Parse(inputCommand);
+
+                    string action = parser.Action;
+                    string[] tokens = parser.Tokens;
+
+                    switch (action)
+                    {
+                        case "moveto":
+                            if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
+                            {
+                                var moveToCmd = new MoveTo(pBox, x, y);
+                                moveToCmd.Execute();
+                            }
+                            break;
+                            // Handle other command cases
+                    }
                 }
+                
+
+                
             }
         }
 
