@@ -95,6 +95,8 @@ namespace IOGPL
                         case "moveto":
                             if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
                             {
+                                defaultX = x;
+                                defaultY = y;
                                 var moveToCmd = new MoveTo(pBox, x, y);
                                 moveToCmd.Execute();
                             }
