@@ -8,6 +8,17 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
+    /*public interface IGraphics
+    {
+        void DrawLine(Pen pen, int x1, int y1, int x2, int y2);
+    }
+
+    public interface IPictureBox
+    {
+        IGraphics CreateGraphics();
+        // Add other PictureBox methods/properties as needed.
+    }
+*/
     public interface ICommand
     {
         void Execute();

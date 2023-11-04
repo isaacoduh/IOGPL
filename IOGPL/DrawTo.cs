@@ -25,30 +25,13 @@ namespace IOGPL
 
         public override void Execute()
         {
-            /*pictureBox.Image?.Dispose();
-            Bitmap updatedImage = new Bitmap(pictureBox.Width, pictureBox.Height);
-            using (Graphics g = Graphics.FromImage(updatedImage))
-            {
-                using (Pen p = new Pen(Color.Red))
-                {
-                    g.DrawLine(p, startx, starty, endx, endy);
-                }
-                *//*startx = endx;
-                starty = endy;*//*
-            }
-            pictureBox.Image = updatedImage;*/
+            
             using (Graphics g = pictureBox.CreateGraphics())
             {
                 using (Pen p = new Pen(Color.Red))
                 {
                     g.DrawLine(p, startx, starty, endx, endy);
                 }
-                //m_currentX = endx;
-                //m_currentY = endy;
-
-                //RedrawPictureBox();
-
-                // m_pictureBox.Invalidate();
             }
         }
     }
