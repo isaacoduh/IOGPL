@@ -20,8 +20,17 @@ namespace IOGPL
         public InvalidCommandException() { }
         public InvalidCommandException(string message) : base(message) { }
     }
+
+
     public class CommandParser
     {
+        BaseCanvas canvas;
+
+        public CommandParser(BaseCanvas canvas)
+        {
+            this.canvas = canvas;
+            this.canvas.RenderCursor();
+        }
         public string Action { get; set; }
         public string[] Tokens { get; set; }
 

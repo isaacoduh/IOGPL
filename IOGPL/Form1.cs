@@ -18,8 +18,18 @@ namespace IOGPL
         //private int defaultY = 5;
         //private Bitmap bitmap;
         //private Graphics graphics;
-        
 
+        const bool Execute = true;
+        const bool DONT_EXECUTE = false;
+
+        Bitmap outputBitmap = new Bitmap(640, 480);
+        Bitmap cursorBitmap = new Bitmap(640, 480);
+
+        Graphics bmG;
+        BaseCanvas canvas;
+
+        CommandParser parser;
+        Color backgroundColor = Color.DarkGray;
         
         private int defaultX = 5;
         private int defaultY = 5;
@@ -30,9 +40,13 @@ namespace IOGPL
         public Form1()
         {
             InitializeComponent();
+            bmG = Graphics.FromImage(outputBitmap);
+            canvas = new BaseCanvas(this, Graphics.FromImage(outputBitmap), Graphics.FromImage(cursorBitmap));
+            parser = new CommandParser(canvas);
+            bmG.Clear(backgroundColor);
 
-            Command m = new MoveTo(pBox, defaultX, defaultY);
-            m.Execute();
+            /*Command m = new MoveTo(pBox, defaultX, defaultY);
+            m.Execute();*/
             
             /*ICommand moveToCommand = new MoveToCommand(pBox, defaultX, defaultY);
             processor.SetCommand(moveToCommand);
@@ -43,8 +57,10 @@ namespace IOGPL
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar ==(char)Keys.Enter)
+            /*if(e.KeyChar ==(char)Keys.Enter)
+            
             {
+                
                 if (cmdTxtBox.Text == "run")
                 {
                     Console.WriteLine("Run Command Called");
@@ -119,7 +135,7 @@ namespace IOGPL
                 
 
                 
-            }
+            }*/
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -130,6 +146,13 @@ namespace IOGPL
             }*/
 
             //pBox.Invalidate();
+        }
+
+        private void pBox_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawImageUnscaled(outputBitmap, 0, 0);
+            g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
     }
 }
