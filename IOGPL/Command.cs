@@ -38,8 +38,14 @@ namespace IOGPL
                 case "moveto":
                     if(Parameters.Length == 2 && int.TryParse(Parameters[0], out int x) && int.TryParse(Parameters[1], out int y))
                     {
-                        c.Move(x, y);
+                        c.MoveTo(x, y);
                     }
+                break;
+                case "drawto":
+                    if (Parameters.Length == 2 && int.TryParse(Parameters[0], out int tX) && int.TryParse(Parameters[1], out int tY))
+                    {
+                        c.DrawTo(tX, tY);
+                    } 
                 break;
            }
         }

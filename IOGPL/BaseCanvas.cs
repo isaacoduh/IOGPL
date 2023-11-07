@@ -51,11 +51,24 @@ namespace IOGPL
             parentForm.Refresh();
         }
 
-        public void Move(int x, int y)
+        public void MoveTo(int x, int y)
         {
             xPosition = x;
             yPosition = y;
 
+            if(isTestingMode == false)
+            {
+                RenderCursor();
+            }
+        }
+
+        public void DrawTo(int tX, int tY)
+        {
+            // TODO: Implement some check and throw exceptions
+            if (g != null)
+                g.DrawLine(pen, xPosition, yPosition, tX, tY);
+            xPosition = tX;
+            yPosition = tY;
             if(isTestingMode == false)
             {
                 RenderCursor();
