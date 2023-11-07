@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
-    /*public interface IGraphics
+    *//*public interface IGraphics
     {
         void DrawLine(Pen pen, int x1, int y1, int x2, int y2);
     }
@@ -18,11 +18,8 @@ namespace IOGPL
         IGraphics CreateGraphics();
         // Add other PictureBox methods/properties as needed.
     }
-*/
-    public interface ICommand
-    {
-        void Execute();
-    }
+*//*
+    
 
     public class CommandProcessor
     {
@@ -74,3 +71,4 @@ namespace IOGPL
         }
     }
 }
+*/

@@ -8,32 +8,25 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
-    /*public class MoveTo : Command
+    public class MoveTo : Command
     {
-        private PictureBox pictureBox;
-        private int m_x, m_y;
-
-        public MoveTo(PictureBox pictureBox, int targetX, int targetY) : base(pictureBox)
+        private string[] parameters;
+        public MoveTo(BaseCanvas c) : base(c)
         {
-           this.m_x = targetX;
-            this.m_y = targetY;
-            this.pictureBox = pictureBox;
-           
+        }
+
+        public MoveTo(BaseCanvas c, string name, string[] parameters) : base(c, name, parameters)
+        {
+            this.parameters = parameters;
         }
 
         public override void Execute()
         {
-           pictureBox.Image?.Dispose();
-            Bitmap updatedImage = new Bitmap(pictureBox.Width, pictureBox.Height);
-            using (Graphics g = Graphics.FromImage(updatedImage))
+            Console.WriteLine("This is MoveTO Command");
+            if (Parameters.Length == 2 && int.TryParse(Parameters[0], out int x) && int.TryParse(Parameters[1], out int y))
             {
-                // Draw the new ellipse at the target position
-                g.FillEllipse(Brushes.Black, m_x, m_y, 5, 5);
-
+                c.MoveTo(x, y);
             }
-
-            pictureBox.Image = updatedImage;
         }
-
-    }*/
+    }
 }
