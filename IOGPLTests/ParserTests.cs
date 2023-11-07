@@ -12,10 +12,10 @@ namespace IOGPLTests
             var parser = new CommandParser();
 
             // Act
-            parser.Parse("moveto 100,100");
+            parser.ParseCommand("moveTo 100,100");
 
             // Assert
-            Assert.AreEqual("moveto", parser.Action);
+            Assert.AreEqual("moveTo", parser.Action);
             CollectionAssert.AreEqual(new string[] { "100", "100" }, parser.Tokens);
 
         }
@@ -28,7 +28,7 @@ namespace IOGPLTests
             var parser = new CommandParser();
 
             // Act
-            parser.Parse("movto 100,100");
+            parser.ParseCommand("movto 100,100");
         }
 
 
@@ -39,9 +39,9 @@ namespace IOGPLTests
             var parser = new CommandParser();
 
             // act
-            parser.Parse("drawto 200,100");
+            parser.ParseCommand("drawTo 200,100");
 
-            Assert.AreEqual("drawto", parser.Action);
+            Assert.AreEqual("drawTo", parser.Action);
             CollectionAssert.AreEqual(new string[] {"200","100"}, parser.Tokens);
         }
 
@@ -51,7 +51,7 @@ namespace IOGPLTests
         {
             var parser = new CommandParser();
 
-            parser.Parse("drawwto 200,200");
+            parser.ParseCommand("drawwto 200,200");
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace IOGPLTests
             var parser = new CommandParser();
 
             // act
-            parser.Parse("drawto 100");
+            parser.ParseCommand("drawTo 100");
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace IOGPLTests
             var parser = new CommandParser();
 
             // act
-            parser.Parse("drawto 100,100,100");
+            parser.ParseCommand("drawTo 100,100,100");
         }
     }
 }

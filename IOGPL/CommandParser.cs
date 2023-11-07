@@ -6,21 +6,6 @@ using System.Threading.Tasks;
 
 namespace IOGPL
 {
-    public class InvalidTokenCountException : Exception
-    {
-        public InvalidTokenCountException() { }
-        public InvalidTokenCountException(string message) : base(message)
-        {
-
-        }
-    }
-
-    public class InvalidCommandException : Exception
-    {
-        public InvalidCommandException() { }
-        public InvalidCommandException(string message) : base(message) { }
-    }
-
 
     public class CommandParser
     {
@@ -39,63 +24,33 @@ namespace IOGPL
         public void ParseCommand(string command)
         {
             string[] parts = command.Split(' ');
-            Action = parts[0];
-            Tokens = parts[1].Split(',');
-            /*if(parts.Length >= 1)
-            {
-                Action = parts[0];
-
-                if(IsValidCommand(Action, parts[1].Split(',').Length))
-                {
-                    if(parts.Length > 1)
-                    {
-                        Tokens = parts[1].Split(' ');
-                    } else
-                    {
-                        Tokens = new string[0];
-                    }
-                }
-                else
-                {
-                    throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
-                }
-            }
-            else
-            {
-                throw new InvalidCommandException("Invalid command format. Expected 'action tokens'.");
-            }*/
-
             
-        }
-
-        public void Parse(string command)
-        {
-            string[] parts = command.Split(' ');
-            if (parts.Length >= 1)
+            Tokens = parts[1].Split(',');
+            if(parts.Length >= 1)
             {
                 Action = parts[0];
-                
-
-                // check the action the its associated token count
                 if(IsValidCommand(Action, parts[1].Split(',').Length))
                 {
-                    if(parts.Length > 1)
+
+                    if (parts.Length > 1)
                     {
                         Tokens = parts[1].Split(',');
-                    } else
+                    }
+                    else
                     {
                         Tokens = new string[0];
                     }
+
                 } else
                 {
                     throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
                 }
-                
             } else
             {
-                throw new InvalidCommandException("Invalid command format. Expected 'action tokens'.");
+                throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
             }
 
+            
         }
 
         private bool IsValidCommand(string action, int tokenCount)
@@ -112,9 +67,9 @@ namespace IOGPL
                 {"reset", 0 },
                 {"run", 0 }
             };
-            if(validCommands.ContainsKey(action.ToLower())) 
+            if(validCommands.ContainsKey(action.Trim())) 
             {
-                int expectedTokenCount = validCommands[action.ToLower()];
+                int expectedTokenCount = validCommands[action.Trim()];
                 if(tokenCount == expectedTokenCount)
                 {
                     return true;
