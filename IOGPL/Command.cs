@@ -16,7 +16,7 @@ namespace IOGPL
     /// Abstract Class that defines a common method Execute. That 
     /// is executed by all basic command classes
     /// </summary>
-    public class Command : ICommand
+    public abstract class Command : ICommand
     {
         protected BaseCanvas c;
         public string Name;
@@ -34,8 +34,8 @@ namespace IOGPL
         }
 
 
-        // public abstract void Execute();
-        public void Execute()
+        public abstract void Execute();
+        /*public void Execute()
         {
            switch (Name)
            {
@@ -52,6 +52,6 @@ namespace IOGPL
                     } 
                 break;
            }
-        }
+        }*/
     }
 }

@@ -8,31 +8,25 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
-    /*public class DrawTo : Command
+    public class DrawTo : Command
     {
-       *//* private PictureBox pictureBox;
-        private int startx, starty;
-        private int endx, endy;
-
-        public DrawTo(PictureBox pictureBox, int startx, int starty, int endx, int endy) : base(pictureBox)
+        private string[] parameters;
+        public DrawTo(BaseCanvas c) : base(c)
         {
-            this.pictureBox = pictureBox;
-            this.startx = startx;
-            this.starty = starty;
-            this.endx = endx;
-            this.endy = endy;
+        }
+
+        public DrawTo(BaseCanvas c, string name, string[] parameters) : base(c, name, parameters)
+        {
+            this.parameters = parameters;
         }
 
         public override void Execute()
         {
-            
-            using (Graphics g = pictureBox.CreateGraphics())
+            Console.WriteLine("This is DrawToCommand");
+            if (Parameters.Length == 2 && int.TryParse(Parameters[0], out int tX) && int.TryParse(Parameters[1], out int tY))
             {
-                using (Pen p = new Pen(Color.Red))
-                {
-                    g.DrawLine(p, startx, starty, endx, endy);
-                }
+                c.DrawTo(tX, tY);
             }
-        }*//*
-    }*/
+        }
+    }
 }

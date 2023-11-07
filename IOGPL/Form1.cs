@@ -34,7 +34,7 @@ namespace IOGPL
         private int defaultX = 5;
         private int defaultY = 5;
 
-        private CommandProcessor processor = new CommandProcessor();
+        //private CommandProcessor processor = new CommandProcessor();/**/
 
 
         public Form1()
@@ -73,8 +73,16 @@ namespace IOGPL
                         Console.WriteLine(i);
                     }
 
-                    Command c = new Command(canvas, action, tokens);
-                    c.Execute();
+                    
+                    if (parser.Action.Equals("drawTo"))
+                    {
+                        Command c = new DrawTo(canvas, action, tokens);
+                        c.Execute();
+                    } else if (parser.Action.Equals("moveTo"))
+                    {
+                        Command c = new MoveTo(canvas, action, tokens);
+                        c.Execute();
+                    }
 
                 } catch (Exception ex)
                 {
@@ -164,12 +172,7 @@ namespace IOGPL
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*using(Graphics g = Graphics.FromImage(pBox.Image))
-            {
-                g.FillEllipse(Brushes.Black, defaultX, defaultY, 5, 5);
-            }*/
-
-            //pBox.Invalidate();
+           
         }
 
         private void pBox_Paint(object sender, PaintEventArgs e)
