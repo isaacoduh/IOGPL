@@ -8,11 +8,15 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
+    public interface ICommand
+    {
+        void Execute();
+    }
     /// <summary>
     /// Abstract Class that defines a common method Execute. That 
     /// is executed by all basic command classes
     /// </summary>
-    public class Command
+    public class Command : ICommand
     {
         protected BaseCanvas c;
         public string Name;
