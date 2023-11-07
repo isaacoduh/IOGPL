@@ -13,14 +13,15 @@ namespace IOGPL
         const int xSize = 640;
         const int ySize = 480;
 
-        bool isTestingMode = false;
+        public bool isTestingMode = false;
 
         public int xPosition, yPosition;
-        int xBaseCanvasSize, yBaseCanvasSize;
+        public int xBaseCanvasSize, yBaseCanvasSize;
         Pen pen;
         Color penColor;
         Graphics g, cursorGraphics;
         Form parentForm;
+
 
         public BaseCanvas()
         {
