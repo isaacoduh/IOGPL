@@ -12,41 +12,36 @@ namespace IOGPL
     /// Abstract Class that defines a common method Execute. That 
     /// is executed by all basic command classes
     /// </summary>
-    public abstract class Command
+    public class Command
     {
-        protected PictureBox m_pictureBox;
-        protected int m_currentX = 1;
-        protected int m_currentY = 1;
-        private Graphics g;
-        private Bitmap bmp;
+        protected BaseCanvas c;
+        public string Name;
+        public string[] Parameters;
 
-        public Command(PictureBox pictureBox)
+        public Command(BaseCanvas c)
         {
-            m_pictureBox = pictureBox;
+            this.c = c;
         }
 
-        protected void SetupPictureBox()
+        public Command(BaseCanvas c, string name, string[] parameters) : this(c)
         {
-            m_pictureBox.Paint += (sender, e) =>
-            {
-                using (var pen = new Pen(Color.Red, 2))
-                {
-                    e.Graphics.DrawEllipse(pen, m_currentX - 2, m_currentY - 2, 5, 5);
-                }
-            };
+            Name = name;
+            Parameters = parameters;
         }
 
-        public abstract void Execute();
 
-        protected void RerenderPictureBox()
+        // public abstract void Execute();
+        public void Execute()
         {
-            m_pictureBox.Invalidate();
-        }
-
-        public void setCurrentPosition(int x, int y)
-        {
-            m_currentX = x;
-            m_currentY = y; 
+           switch (Name)
+           {
+                case "moveto":
+                    if(Parameters.Length == 2 && int.TryParse(Parameters[0], out int x) && int.TryParse(Parameters[1], out int y))
+                    {
+                        c.Move(x, y);
+                    }
+                break;
+           }
         }
     }
 }

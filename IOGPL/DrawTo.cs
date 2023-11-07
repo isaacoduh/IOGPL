@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
-    public class DrawTo : Command
+    /*public class DrawTo : Command
     {
-        private PictureBox pictureBox;
+       *//* private PictureBox pictureBox;
         private int startx, starty;
         private int endx, endy;
 
@@ -33,6 +33,6 @@ namespace IOGPL
                     g.DrawLine(p, startx, starty, endx, endy);
                 }
             }
-        }
-    }
+        }*//*
+    }*/
 }

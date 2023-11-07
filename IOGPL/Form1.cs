@@ -57,6 +57,30 @@ namespace IOGPL
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                try
+                {
+                    string inputCommand = cmdTxtBox.Text.Trim();
+                    CommandParser parser = new CommandParser();
+                    parser.ParseCommand(inputCommand);
+                    string action = parser.Action;
+                    string[] tokens = parser.Tokens;
+
+                    Console.WriteLine($"action {action}");
+                    foreach(string i in tokens)
+                    {
+                        Console.WriteLine(i);
+                    }
+
+                    Command c = new Command(canvas, action, tokens);
+                    c.Execute();
+
+                } catch (Exception ex)
+                {
+
+                }
+            }
             /*if(e.KeyChar ==(char)Keys.Enter)
             
             {

@@ -51,5 +51,16 @@ namespace IOGPL
             parentForm.Refresh();
         }
 
+        public void Move(int x, int y)
+        {
+            xPosition = x;
+            yPosition = y;
+
+            if(isTestingMode == false)
+            {
+                RenderCursor();
+            }
+        }
+
     }
 }

@@ -26,6 +26,8 @@ namespace IOGPL
     {
         BaseCanvas canvas;
 
+        public CommandParser() { }
+
         public CommandParser(BaseCanvas canvas)
         {
             this.canvas = canvas;
@@ -33,6 +35,38 @@ namespace IOGPL
         }
         public string Action { get; set; }
         public string[] Tokens { get; set; }
+
+        public void ParseCommand(string command)
+        {
+            string[] parts = command.Split(' ');
+            Action = parts[0];
+            Tokens = parts[1].Split(',');
+            /*if(parts.Length >= 1)
+            {
+                Action = parts[0];
+
+                if(IsValidCommand(Action, parts[1].Split(',').Length))
+                {
+                    if(parts.Length > 1)
+                    {
+                        Tokens = parts[1].Split(' ');
+                    } else
+                    {
+                        Tokens = new string[0];
+                    }
+                }
+                else
+                {
+                    throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                }
+            }
+            else
+            {
+                throw new InvalidCommandException("Invalid command format. Expected 'action tokens'.");
+            }*/
+
+            
+        }
 
         public void Parse(string command)
         {
@@ -69,8 +103,8 @@ namespace IOGPL
             // Define valid commands and their associated token counts
             Dictionary<string, int> validCommands = new Dictionary<string, int>
             {
-                {"moveto",2 },
-                {"drawto", 2 },
+                {"moveTo",2 },
+                {"drawTo", 2 },
                 {"circle", 1 },
                 {"rect", 4 },
                 {"triangle", 4 },
