@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace IOGPL
 {
-    public class MoveTo : Command
+    /*public class MoveTo : Command
     {
         private PictureBox pictureBox;
         private int m_x, m_y;
@@ -35,5 +35,5 @@ namespace IOGPL
             pictureBox.Image = updatedImage;
         }
 
-    }
+    }*/
 }
