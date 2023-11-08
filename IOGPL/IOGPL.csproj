@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ActionParser.cs" />
     <Compile Include="BaseCanvas.cs" />
+    <Compile Include="Clear.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="DrawTo.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="GPLException.cs" />
     <Compile Include="MoveTo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Reset.cs" />
     <Compile Include="t.cs" />
   </ItemGroup>
   <ItemGroup>

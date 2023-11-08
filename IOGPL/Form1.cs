@@ -68,10 +68,6 @@ namespace IOGPL
                     string[] tokens = parser.Tokens;
 
                     Console.WriteLine($"action {action}");
-                    foreach(string i in tokens)
-                    {
-                        Console.WriteLine(i);
-                    }
 
                     
                     if (parser.Action.Equals("drawTo"))
@@ -82,6 +78,17 @@ namespace IOGPL
                     {
                         Command c = new MoveTo(canvas, action, tokens);
                         c.Execute();
+                    } else if (parser.Action.Equals("clear"))
+                    {
+                        Command c = new Clear(canvas);
+                        c.Execute();
+                    } else if (parser.Action.Equals("reset"))
+                    {
+                        Command c = new Reset(canvas);
+                        c.Execute();
+                    } else
+                    {
+                        throw new InvalidCommandException("Invalid argument entered");
                     }
 
                 } catch (Exception ex)
@@ -181,5 +188,6 @@ namespace IOGPL
             g.DrawImageUnscaled(outputBitmap, 0, 0);
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
+
     }
 }

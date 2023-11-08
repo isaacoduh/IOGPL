@@ -75,5 +75,57 @@ namespace IOGPLTests
             // act
             parser.ParseCommand("drawTo 100,100,100");
         }
+
+        [TestMethod]
+        public void Parse_Valid_ClearCommand()
+        {
+            var parser = new CommandParser();
+
+            parser.ParseCommand("clear");
+
+            Assert.AreEqual("clear", parser.Action);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCommandException))]
+        public void ThrowException_With_Invalid_ClearCommand()
+        {
+            var parser = new CommandParser();
+            parser.ParseCommand("cler");
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCommandException))]
+        public void ThrowException_With_TokensFor_ClearCommand()
+        {
+            var parser = new CommandParser();
+
+            parser.ParseCommand("clear 100");
+        }
+
+        [TestMethod]
+        public void Parse_Valid_ResetCommand()
+        {
+            var parser = new CommandParser();
+            parser.ParseCommand("reset");
+            Assert.AreEqual("reset", parser.Action);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCommandException))]
+        public void ThrowException_With_Invalid_ResetCommand()
+        {
+            var parser = new CommandParser();
+            parser.ParseCommand("resett");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCommandException))]
+        public void ThrowException_With_TokensFor_ResetCommand()
+        {
+            var parser = new CommandParser();
+            parser.ParseCommand("reset 100");
+        }
     }
 }

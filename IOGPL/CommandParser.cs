@@ -24,33 +24,79 @@ namespace IOGPL
         public void ParseCommand(string command)
         {
             string[] parts = command.Split(' ');
-            
-            Tokens = parts[1].Split(',');
-            if(parts.Length >= 1)
+
+            if(parts.Length == 1 ) {
+                if(parts[0] == "clear" || parts[0] == "reset")
+                {
+                    Action = parts[0];
+                    Tokens = null;
+                } else
+                {
+                    throw new InvalidCommandException($"Invalid command. Only clear or reset can be called without a token list");
+                }
+            }
+            else if (parts.Length >= 1)
             {
                 Action = parts[0];
-                if(IsValidCommand(Action, parts[1].Split(',').Length))
+                if (Action != "clear" || Action != "reset")
                 {
-
-                    if (parts.Length > 1)
+                    if (IsValidCommand(Action, parts[1].Split(',').Length))
                     {
-                        Tokens = parts[1].Split(',');
+
+                        if (parts.Length > 1)
+                        {
+                            Tokens = parts[1].Split(',');
+                        }
+                        else
+                        {
+                            Tokens = new string[0];
+                        }
+
                     }
                     else
                     {
-                        Tokens = new string[0];
+                        throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
                     }
-
-                } else
-                {
-                    throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
                 }
-            } else
+
+            }
+            else
             {
                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
             }
 
-            
+
+            /* 
+             if(parts.Length >= 1)
+             {
+                 Action = parts[0];
+                 if(Action != "clear" || Action != "reset")
+                 {
+                     if (IsValidCommand(Action, parts[1].Split(',').Length))
+                     {
+
+                         if (parts.Length > 1)
+                         {
+                             Tokens = parts[1].Split(',');
+                         }
+                         else
+                         {
+                             Tokens = new string[0];
+                         }
+
+                     }
+                     else
+                     {
+                         throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                     }
+                 }
+
+             } else
+             {
+                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
+             }*/
+
+
         }
 
         private bool IsValidCommand(string action, int tokenCount)
@@ -62,10 +108,7 @@ namespace IOGPL
                 {"drawTo", 2 },
                 {"circle", 1 },
                 {"rect", 4 },
-                {"triangle", 4 },
-                {"clear", 0 },
-                {"reset", 0 },
-                {"run", 0 }
+                {"triangle", 4 }
             };
             if(validCommands.ContainsKey(action.Trim())) 
             {
