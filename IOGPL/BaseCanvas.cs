@@ -136,5 +136,15 @@ namespace IOGPL
             RenderCursor();
         }
 
+        public void Square(int size)
+        {
+            if(g != null)
+            {
+                g.DrawRectangle(pen, xPosition, yPosition, xPosition + size, yPosition + size);
+            }
+
+            RenderCursor();
+        }
+
     }
 }

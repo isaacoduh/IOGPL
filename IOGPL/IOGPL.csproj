@@ -57,6 +57,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Rect.cs" />
     <Compile Include="Reset.cs" />
+    <Compile Include="Square.cs" />
     <Compile Include="t.cs" />
   </ItemGroup>
   <ItemGroup>
