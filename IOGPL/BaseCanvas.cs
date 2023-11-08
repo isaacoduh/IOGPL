@@ -76,5 +76,34 @@ namespace IOGPL
             }
         }
 
+        public void Clear()
+        {
+            if(isTestingMode == true)
+            {
+                return;
+            }
+
+            if (g != null)
+            {
+                g.Clear(Color.Transparent);
+            }
+
+            RenderCursor();
+        }
+
+        public void Reset()
+        {
+            if (isTestingMode == true)
+                return;
+
+            if (g != null)
+                g.Clear(Color.Transparent);
+            xPosition = 25;
+            yPosition=25;
+
+            RenderCursor();
+
+        }
+
     }
 }
