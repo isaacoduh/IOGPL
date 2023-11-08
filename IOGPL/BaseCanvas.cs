@@ -120,5 +120,21 @@ namespace IOGPL
             RenderCursor();
         }
 
+        public void Rectangle(int width, int  height)
+        {
+            if(width < 0 || height < 0) 
+            {
+
+                throw new GPLException("invalid rectangle size");
+            }
+
+            if(g!= null)
+            {
+                g.DrawRectangle(pen, xPosition - (width/2) , yPosition - (width/2), width, height);
+            }
+
+            RenderCursor();
+        }
+
     }
 }

@@ -90,6 +90,10 @@ namespace IOGPL
                     {
                         Command c = new Circle(canvas, action, tokens);
                         c.Execute();
+                    } else if (parser.Action.Equals("rect"))
+                    {
+                        Command c = new Rect(canvas, action, tokens);
+                        c.Execute();
                     }
                     else
                     {
