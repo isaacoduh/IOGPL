@@ -38,25 +38,38 @@ namespace IOGPL
             else if (parts.Length >= 1)
             {
                 Action = parts[0];
+                Console.WriteLine($"action {Action}");
+                string[] t = parts[1].Split(',');
+
                 if (Action != "clear" || Action != "reset")
                 {
-                    if (IsValidCommand(Action, parts[1].Split(',').Length))
+                    if(t.Length == 1)
                     {
-
-                        if (parts.Length > 1)
-                        {
-                            Tokens = parts[1].Split(',');
-                        }
-                        else
-                        {
-                            Tokens = new string[0];
-                        }
-
+                        Tokens = t;
                     }
                     else
                     {
-                        throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                        if (IsValidCommand(Action, parts[1].Split(',').Length))
+                        {
+
+                            if (parts.Length > 1)
+                            {
+                                Tokens = parts[1].Split(',');
+                            }
+                            else
+                            {
+                                Tokens = new string[0];
+                            }
+
+                        }
+                        else
+                        {
+                            throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                        }
                     }
+
+                    
+                    /**/
                 }
 
             }
@@ -64,39 +77,6 @@ namespace IOGPL
             {
                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
             }
-
-
-            /* 
-             if(parts.Length >= 1)
-             {
-                 Action = parts[0];
-                 if(Action != "clear" || Action != "reset")
-                 {
-                     if (IsValidCommand(Action, parts[1].Split(',').Length))
-                     {
-
-                         if (parts.Length > 1)
-                         {
-                             Tokens = parts[1].Split(',');
-                         }
-                         else
-                         {
-                             Tokens = new string[0];
-                         }
-
-                     }
-                     else
-                     {
-                         throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
-                     }
-                 }
-
-             } else
-             {
-                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
-             }*/
-
-
         }
 
         private bool IsValidCommand(string action, int tokenCount)

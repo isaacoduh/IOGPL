@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ActionParser.cs" />
     <Compile Include="BaseCanvas.cs" />
+    <Compile Include="Circle.cs" />
     <Compile Include="Clear.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandParser.cs" />

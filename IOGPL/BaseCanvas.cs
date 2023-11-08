@@ -105,5 +105,20 @@ namespace IOGPL
 
         }
 
+        public void Circle(int radius)
+        {
+            if (radius < 0)
+            {
+                throw new GPLException("invalid circle size");
+            }
+
+            if (g != null)
+            {
+                g.DrawEllipse(pen, xPosition - radius, yPosition - radius, radius * 2, radius * 2);
+            }
+            
+            RenderCursor();
+        }
+
     }
 }

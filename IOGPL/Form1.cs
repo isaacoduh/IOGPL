@@ -67,9 +67,9 @@ namespace IOGPL
                     string action = parser.Action;
                     string[] tokens = parser.Tokens;
 
-                    Console.WriteLine($"action {action}");
+                   
 
-                    
+
                     if (parser.Action.Equals("drawTo"))
                     {
                         Command c = new DrawTo(canvas, action, tokens);
@@ -86,7 +86,12 @@ namespace IOGPL
                     {
                         Command c = new Reset(canvas);
                         c.Execute();
-                    } else
+                    } else if (parser.Action.Equals("circle"))
+                    {
+                        Command c = new Circle(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else
                     {
                         throw new InvalidCommandException("Invalid argument entered");
                     }

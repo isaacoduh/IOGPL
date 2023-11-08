@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace IOGPL
 {
-    public abstract class GPLException : Exception
+    public abstract class GlobalException : Exception
     {
-        public GPLException(string message) : base(message)
+        public GlobalException(string message) : base(message)
         {
+        }
+    }
+
+    public class GPLException : GlobalException
+    {
+        public GPLException(string message): base(message) 
+        { 
+            
         }
     }
 
