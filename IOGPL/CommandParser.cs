@@ -88,7 +88,7 @@ namespace IOGPL
                 {"drawTo", 2 },
                 {"circle", 1 },
                 {"rect", 2 },
-                {"triangle", 4 }
+                {"tri", 6 }
             };
             if(validCommands.ContainsKey(action.Trim())) 
             {

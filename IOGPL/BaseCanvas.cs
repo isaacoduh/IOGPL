@@ -146,5 +146,16 @@ namespace IOGPL
             RenderCursor();
         }
 
+        public void Triangle(int x1, int y1, int x2, int y2, int x3, int y3)
+        {
+            if(g != null)
+            {
+                Point[] points = {new Point(x1,y1), new Point(x2,y2), new Point(x3,y3)};
+                g.DrawPolygon(pen, points);
+            }
+
+            RenderCursor();
+        }
+
     }
 }

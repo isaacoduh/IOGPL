@@ -59,6 +59,7 @@
     <Compile Include="Reset.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="t.cs" />
+    <Compile Include="Triangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

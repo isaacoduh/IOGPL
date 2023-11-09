@@ -98,6 +98,10 @@ namespace IOGPL
                     {
                         Command c = new Square(canvas, action, tokens);
                         c.Execute();
+                    } else if (parser.Action.Equals("tri"))
+                    {
+                        Command c = new Triangle(canvas, action, tokens);
+                        c.Execute();
                     }
                     else
                     {
