@@ -13,14 +13,19 @@ namespace IOGPL
         const int xSize = 640;
         const int ySize = 480;
 
+        public Color defaultPenColor = Color.Black;
+
         public bool isTestingMode = false;
+        public bool fillStatus = false;
 
         public int xPosition, yPosition;
         public int xBaseCanvasSize, yBaseCanvasSize;
+        SolidBrush fillBrush;
         Pen pen;
         Color penColor;
         Graphics g, cursorGraphics;
         Form parentForm;
+
 
 
         public BaseCanvas()
@@ -37,8 +42,17 @@ namespace IOGPL
             xBaseCanvasSize = xSize;
             yBaseCanvasSize = ySize;
             xPosition = yPosition = 20;
-            pen = new Pen(penColor, 1);
+            SetupPen(defaultPenColor);
+            fillBrush = new SolidBrush(Color.Black);
             this.parentForm = parentForm;
+
+        }
+
+        public void SetupPen(Color color)
+        {
+            penColor = color;
+            pen = new Pen(color, 1);
+
         }
 
 
@@ -114,6 +128,10 @@ namespace IOGPL
 
             if (g != null)
             {
+                if (fillStatus)
+                {
+                    g.FillEllipse(fillBrush, xPosition - radius, yPosition - radius, radius * 2, radius * 2);
+                }
                 g.DrawEllipse(pen, xPosition - radius, yPosition - radius, radius * 2, radius * 2);
             }
             
@@ -130,6 +148,10 @@ namespace IOGPL
 
             if(g!= null)
             {
+                if (fillStatus)
+                {
+                    g.FillRectangle(fillBrush, xPosition - (width / 2), yPosition - (width / 2), width, height);
+                }
                 g.DrawRectangle(pen, xPosition - (width/2) , yPosition - (width/2), width, height);
             }
 
@@ -140,6 +162,10 @@ namespace IOGPL
         {
             if(g != null)
             {
+                if (fillStatus)
+                {
+                    g.FillRectangle(fillBrush, xPosition, yPosition, xPosition + size, yPosition + size);
+                }
                 g.DrawRectangle(pen, xPosition, yPosition, xPosition + size, yPosition + size);
             }
 
@@ -151,6 +177,10 @@ namespace IOGPL
             if(g != null)
             {
                 Point[] points = {new Point(x1,y1), new Point(x2,y2), new Point(x3,y3)};
+                if (fillStatus)
+                {
+                    g.FillPolygon(fillBrush, points);
+                }
                 g.DrawPolygon(pen, points);
             }
 
@@ -168,6 +198,16 @@ namespace IOGPL
                 }
             }
                 
+        }
+
+
+        public void SetFillStatus()
+        {
+            this.fillStatus = !fillStatus;
+            if (fillStatus)
+            {
+                this.fillBrush = new SolidBrush(penColor);
+            }
         }
 
     }

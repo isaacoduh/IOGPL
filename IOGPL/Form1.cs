@@ -106,6 +106,10 @@ namespace IOGPL
                     {
                         Command c = new PenCommand(canvas, action, tokens);
                         c.Execute();
+                    } else if (parser.Action.Equals("fill"))
+                    {
+                        Command c = new FillCommand(canvas, action, tokens);
+                        c.Execute();
                     }
                     else
                     {
