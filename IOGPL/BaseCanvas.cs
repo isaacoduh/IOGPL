@@ -37,7 +37,7 @@ namespace IOGPL
             xBaseCanvasSize = xSize;
             yBaseCanvasSize = ySize;
             xPosition = yPosition = 20;
-            pen = new Pen(Color.Black, 1);
+            pen = new Pen(penColor, 1);
             this.parentForm = parentForm;
         }
 
@@ -155,6 +155,19 @@ namespace IOGPL
             }
 
             RenderCursor();
+        }
+
+        public void SetPenColor(string color)
+        {
+            if(isTestingMode == false)
+            {
+                Color c =  Color.FromName(color);
+                if(c != null)
+                {
+                    this.pen.Color = c;
+                }
+            }
+                
         }
 
     }
