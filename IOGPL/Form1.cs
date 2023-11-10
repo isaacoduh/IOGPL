@@ -102,6 +102,14 @@ namespace IOGPL
                     {
                         Command c = new Triangle(canvas, action, tokens);
                         c.Execute();
+                    } else if (parser.Action.Equals("pen"))
+                    {
+                        Command c = new PenCommand(canvas, action, tokens);
+                        c.Execute();
+                    } else if (parser.Action.Equals("fill"))
+                    {
+                        Command c = new FillCommand(canvas, action, tokens);
+                        c.Execute();
                     }
                     else
                     {
