@@ -41,5 +41,13 @@ namespace IOGPLTests
             Assert.AreEqual(50, canvas.xPosition);
             Assert.AreEqual(50, canvas.yPosition);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(GPLException))]
+        public void Invalid_CirlceCommand_ThrowsException()
+        {
+            BaseCanvas canvas = new BaseCanvas();
+            canvas.Circle(-4);
+        }
     }
 }
