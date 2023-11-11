@@ -97,6 +97,7 @@
             this.saveBtn.TabIndex = 5;
             this.saveBtn.Text = "Save";
             this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // loadBtn
             // 
@@ -105,8 +106,9 @@
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(50, 22);
             this.loadBtn.TabIndex = 6;
-            this.loadBtn.Text = "Load";
+            this.loadBtn.Text = "Open";
             this.loadBtn.UseVisualStyleBackColor = true;
+            this.loadBtn.Click += new System.EventHandler(this.loadBtn_Click);
             // 
             // Form1
             // 
