@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -206,5 +207,48 @@ namespace IOGPL
                 
             }
         }
+
+        private void SaveProgramToFile(string fileName)
+        {
+            using(StreamWriter sw  = new StreamWriter(fileName))
+            {
+                foreach(string line in rTextBox.Lines)
+                {
+                    sw.WriteLine(line);
+                }
+            }
+        }
+
+        private void LoadProgramFromFile(string fileName)
+        {
+            if(File.Exists(fileName))
+            {
+                rTextBox.Text = File.ReadAllText(fileName);
+            }
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "IOGPL Files (*.iogpl)|*.iogpl|Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveFileDialog.FileName;
+                SaveProgramToFile(fileName);
+            }
+        }
+
+        private void loadBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "IOGPL Files (*.iogpl)|*.iogpl|Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = openFileDialog.FileName;
+                LoadProgramFromFile(fileName);
+            }
+        }
     }
+
+   
 }
