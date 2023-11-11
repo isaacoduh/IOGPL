@@ -121,85 +121,6 @@ namespace IOGPL
 
                 }
             }
-            /*if(e.KeyChar ==(char)Keys.Enter)
-            
-            {
-                
-                if (cmdTxtBox.Text == "run")
-                {
-                    Console.WriteLine("Run Command Called");
-                    foreach(string input in rTextBox.Lines)
-                    {
-                        Console.WriteLine($"{input} \n");
-                        CommandParser parser = new CommandParser();
-                        parser.Parse(input);
-
-                        string action = parser.Action;
-                        string[] tokens = parser.Tokens;
-
-                        switch (action)
-                        {
-                            case "moveto":
-                                if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
-                                {
-                                    var moveToCmd = new MoveTo(pBox, x, y);
-                                    moveToCmd.Execute();
-                                }
-                                break;
-                            case "drawto":
-                                if (tokens.Length == 2
-                                    && int.TryParse(tokens[0], out int endx)
-                                    && int.TryParse(tokens[1], out int endy)
-
-                                 )
-                                {
-                                    var drawToCmd = new DrawTo(pBox, defaultX, defaultY, endx, endy);
-                                    drawToCmd.Execute();
-
-                                }
-                                break;
-                                // Handle other command cases
-                        }
-                    }
-                } else
-                {
-                    string inputCommand = cmdTxtBox.Text;
-                    CommandParser parser = new CommandParser();
-                    parser.Parse(inputCommand);
-
-                    string action = parser.Action;
-                    string[] tokens = parser.Tokens;
-
-                    switch (action)
-                    {
-                        case "moveto":
-                            if (tokens.Length == 2 && int.TryParse(tokens[0], out int x) && int.TryParse(tokens[1], out int y))
-                            {
-                                defaultX = x;
-                                defaultY = y;
-                                var moveToCmd = new MoveTo(pBox, x, y);
-                                moveToCmd.Execute();
-                            }
-                        break;
-                        case "drawto":
-                            if(tokens.Length == 2
-                                && int.TryParse(tokens[0], out int endx)
-                                && int.TryParse(tokens[1], out int endy)
-                                
-                             )
-                            {
-                                var drawToCmd = new DrawTo(pBox, defaultX, defaultY, endx, endy);
-                                drawToCmd.Execute();
-
-                            }
-                        break;
-                            // Handle other command cases
-                    }
-                }
-                
-
-                
-            }*/
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -214,5 +135,76 @@ namespace IOGPL
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
 
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            if(rTextBox != null)
+            {
+                CommandParser parser = new CommandParser();
+               
+
+                foreach(string line in rTextBox.Lines)
+                {
+                    parser.ParseCommand(line.Trim());
+                    string action = parser.Action;
+                    string[] tokens = parser.Tokens;
+
+                    if (parser.Action.Equals("drawTo"))
+                    {
+                        Command c = new DrawTo(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("moveTo"))
+                    {
+                        Command c = new MoveTo(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("clear"))
+                    {
+                        Command c = new Clear(canvas);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("reset"))
+                    {
+                        Command c = new Reset(canvas);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("circle"))
+                    {
+                        Command c = new Circle(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("rect"))
+                    {
+                        Command c = new Rect(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("square"))
+                    {
+                        Command c = new Square(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("tri"))
+                    {
+                        Command c = new Triangle(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("pen"))
+                    {
+                        Command c = new PenCommand(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else if (parser.Action.Equals("fill"))
+                    {
+                        Command c = new FillCommand(canvas, action, tokens);
+                        c.Execute();
+                    }
+                    else
+                    {
+                        throw new InvalidCommandException("Invalid argument entered");
+                    }
+                }
+                
+            }
+        }
     }
 }
