@@ -47,6 +47,7 @@
             this.runBtn.TabIndex = 0;
             this.runBtn.Text = "Run";
             this.runBtn.UseVisualStyleBackColor = true;
+            this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
             // 
             // syntaxBtn
             // 

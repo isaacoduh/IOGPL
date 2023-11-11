@@ -10,6 +10,7 @@ namespace IOGPL
     public class CommandParser
     {
         BaseCanvas canvas;
+        List<ParsedCommand> parsedCommands;
 
         public CommandParser() { }
 
@@ -20,6 +21,53 @@ namespace IOGPL
         }
         public string Action { get; set; }
         public string[] Tokens { get; set; }
+
+        public class ParsedCommand
+        {
+            public string Action { get; set; }
+            public string[] Tokens { get; set; }
+        }
+
+        public ParsedCommand parsedCommand;
+
+        public void processCommand() 
+        {
+            
+            switch(parsedCommand.Action) 
+            {
+                case "moveTo":
+                    Console.WriteLine(parsedCommand.Action);
+                    Console.WriteLine(parsedCommand.Tokens.Length);
+                    foreach(string token in parsedCommand.Tokens)
+                    {
+                        Console.WriteLine(token);
+                    }
+                    Command c = new MoveTo(canvas, parsedCommand.Action, parsedCommand.Tokens);
+                    c.Execute();
+                break;
+                
+            }
+        }
+
+        public void ParseProgram(string[] program)
+        {
+            // for each line pass and verify each command
+            foreach(string line in  program)
+            {
+                string tLine = line.Trim();
+                if(!string.IsNullOrEmpty(tLine) )
+                {
+                    try
+                    {
+                       //ParsedCommand p =  ParseCommand(line);
+                        //processCommand();
+                    }catch(Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
+                }
+            }
+        }
 
         public void ParseCommand(string command)
         {
@@ -77,6 +125,12 @@ namespace IOGPL
             {
                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
             }
+
+            parsedCommand = new ParsedCommand
+            {
+                Action = Action,
+                Tokens = Tokens
+            };
         }
 
         private bool IsValidCommand(string action, int tokenCount)
