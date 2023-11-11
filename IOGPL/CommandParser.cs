@@ -69,11 +69,74 @@ namespace IOGPL
             }
         }
 
+        public bool IsValidAction(string action, string[] actions)
+        {
+            return actions.Contains(action);
+        }
+
+        public bool IsValidTokensCount(string action, int suppliedLength) {
+            Dictionary<string, int> validTokenCount = new Dictionary<string, int>
+            {
+                {"moveTo",2 },
+                {"drawTo", 2 },
+                {"circle", 1 },
+                {"rect", 2 },
+                {"square",1 },
+                {"tri", 6 },
+                {"pen",1 },
+                {"fill", 1 }
+            };
+
+            //return false;
+
+            if (suppliedLength == validTokenCount[action])
+            {
+                return true;
+            } else
+            {
+                throw new InvalidTokenCountException($"The required number of tokens for this action {action} was not met.");
+            }
+            
+        }
+
         public void ParseCommand(string command)
         {
+            string[] validActions = { "moveTo", "drawTo", "circle", "rect", "tri", "square", "pen", "fill" };
+            
             string[] parts = command.Split(' ');
 
-            if(parts.Length == 1 ) {
+            if(parts.Length < 2)
+            {
+                if (parts[0] == "clear" || parts[0] == "reset"){
+                    Action = parts[0];
+                    Tokens = null;
+                } else
+                {
+                    throw new InvalidCommandException("Invalid command format. Only clear or reset can have no tokens");
+                }
+            } else
+            {
+                // check if it is a valid action:
+                bool isValid = IsValidAction(parts[0], validActions);
+                if(isValid)
+                {
+                    Action = parts[0];
+
+                    // check if the action while valid also has the required number of tokens.
+                    bool isValidTokensCount = IsValidTokensCount(Action, parts[1].Split(',').Length);
+                    if (isValidTokensCount)
+                    {
+                        Tokens = parts[1].Split(',');
+
+                    }
+                } else
+                {
+                    throw new InvalidCommandActionException("The action supplied is invalid");
+                }
+
+            }
+
+            /*if(parts.Length == 1 ) {
                 if(parts[0] == "clear" || parts[0] == "reset")
                 {
                     Action = parts[0];
@@ -82,42 +145,38 @@ namespace IOGPL
                 {
                     throw new InvalidCommandException($"Invalid command. Only clear or reset can be called without a token list");
                 }
-            }
-            else if (parts.Length >= 1)
+            }*/
+            /*else if (parts.Length > 1)
             {
+
                 Action = parts[0];
                 Console.WriteLine($"action {Action}");
                 string[] t = parts[1].Split(',');
-
-                if (Action != "clear" || Action != "reset")
+                
+                if (t.Length == 1)
                 {
-                    if(t.Length == 1)
+                    Tokens = t;
+                }
+                else
+                {
+                    Console.WriteLine(parts[1].Split(',').Length);
+                    if (IsValidCommand(Action, parts[1].Split(',').Length))
                     {
-                        Tokens = t;
-                    }
-                    else
-                    {
-                        if (IsValidCommand(Action, parts[1].Split(',').Length))
+
+                        if (parts.Length > 1)
                         {
-
-                            if (parts.Length > 1)
-                            {
-                                Tokens = parts[1].Split(',');
-                            }
-                            else
-                            {
-                                Tokens = new string[0];
-                            }
-
+                            Tokens = parts[1].Split(',');
                         }
                         else
                         {
-                            throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                            Tokens = new string[0];
                         }
-                    }
 
-                    
-                    /**/
+                    }
+                    else
+                    {
+                        throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
+                    }
                 }
 
             }
@@ -125,7 +184,7 @@ namespace IOGPL
             {
                 throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
             }
-
+*/
             parsedCommand = new ParsedCommand
             {
                 Action = Action,
@@ -133,7 +192,7 @@ namespace IOGPL
             };
         }
 
-        private bool IsValidCommand(string action, int tokenCount)
+        /*private bool IsValidCommand(string action, int tokenCount)
         {
             // Define valid commands and their associated token counts
             Dictionary<string, int> validCommands = new Dictionary<string, int>
@@ -159,6 +218,6 @@ namespace IOGPL
             }
 
             return false;
-        }
+        }*/
     }
 }

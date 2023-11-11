@@ -33,4 +33,9 @@ namespace IOGPL
     {
         public InvalidCommandException(string message) : base(message) { }
     }
+
+    public class InvalidCommandActionException : GPLException
+    {
+        public InvalidCommandActionException(string message) : base(message) { }
+    }
 }
