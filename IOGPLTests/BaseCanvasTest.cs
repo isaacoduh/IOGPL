@@ -7,9 +7,15 @@ using IOGPL;
 
 namespace IOGPLTests
 {
+    /// <summary>
+    /// Unit tests for the <see cref="BaseCanvas"/> class.
+    /// </summary>
     [TestClass]
     public class BaseCanvasTest
     {
+        /// <summary>
+        /// Tests the constructor of <see cref="BaseCanvas"/> with default values.
+        /// </summary>
         [TestMethod]
         public void Test_ConstructorWith_DefaultValues()
         {
@@ -20,6 +26,10 @@ namespace IOGPLTests
             Assert.IsTrue(canvas.isTestingMode);
         }
 
+
+        /// <summary>
+        /// Tests the <see cref="BaseCanvas.MoveTo"/> method to ensure it updates the position.
+        /// </summary>
         [TestMethod]
         public void MoveTo_UpdatesPosition()
         {
@@ -31,6 +41,9 @@ namespace IOGPLTests
             Assert.AreEqual(89, canvas.yPosition);
         }
 
+        /// <summary>
+        /// Tests the <see cref="BaseCanvas.DrawTo"/> method to ensure it updates the position.
+        /// </summary>
         [TestMethod]
         public void DrawTo_UpdatesPosition()
         {
@@ -42,6 +55,11 @@ namespace IOGPLTests
             Assert.AreEqual(50, canvas.yPosition);
         }
 
+
+
+        /// <summary>
+        /// Tests that an <see cref="GPLException"/> is thrown when an invalid circle command is executed.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(GPLException))]
         public void Invalid_CirlceCommand_ThrowsException()
