@@ -187,6 +187,10 @@ namespace IOGPL
             RenderCursor();
         }
 
+        /// <summary>
+        /// Sets the color of the pen used for drawing.
+        /// </summary>
+        /// <param name="color">The name of the color to set.</param>
         public void SetPenColor(string color)
         {
             if(isTestingMode == false)
