@@ -1,6 +1,13 @@
 using IOGPL;
 namespace IOGPLTests
 {
+    /// <summary>
+    /// Contains unit tests for the methods in the <see cref="CommandParser"/> class.
+    /// </summary>
+    /// <remarks>
+    /// These tests cover various scenarios and edge cases to ensure the correctness
+    /// of the parsing logic in the <see cref="CommandParser"/> class.
+    /// </remarks>
     [TestClass]
     public class ParserTests
     {

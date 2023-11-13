@@ -215,6 +215,25 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Parses a command string and extracts the action and tokens.
+        /// </summary>
+        /// <param name="command">The command string to parse.</param>
+        /// <remarks>
+        /// This method analyzes the provided command string, validates its format, and extracts
+        /// the action and tokens. The parsed information is stored in the <see cref="parsedCommand"/>
+        /// property for further use.
+        /// </remarks>
+        /// <exception cref="InvalidCommandException">
+        /// Thrown when the command format is invalid, and only "clear" or "reset" can have no tokens.
+        /// </exception>
+        /// <exception cref="InvalidCommandActionException">
+        /// Thrown when the supplied action is invalid.
+        /// </exception>
+        /// <seealso cref="IsValidAction"/>
+        /// <seealso cref="IsValidTokensCount"/>
+
         public void ParseCommand(string command)
         {
             string[] validActions = { "moveTo", "drawTo", "circle", "rect", "tri", "square", "pen", "fill" };
@@ -252,55 +271,6 @@ namespace IOGPL
 
             }
 
-            /*if(parts.Length == 1 ) {
-                if(parts[0] == "clear" || parts[0] == "reset")
-                {
-                    Action = parts[0];
-                    Tokens = null;
-                } else
-                {
-                    throw new InvalidCommandException($"Invalid command. Only clear or reset can be called without a token list");
-                }
-            }*/
-            /*else if (parts.Length > 1)
-            {
-
-                Action = parts[0];
-                Console.WriteLine($"action {Action}");
-                string[] t = parts[1].Split(',');
-                
-                if (t.Length == 1)
-                {
-                    Tokens = t;
-                }
-                else
-                {
-                    Console.WriteLine(parts[1].Split(',').Length);
-                    if (IsValidCommand(Action, parts[1].Split(',').Length))
-                    {
-
-                        if (parts.Length > 1)
-                        {
-                            Tokens = parts[1].Split(',');
-                        }
-                        else
-                        {
-                            Tokens = new string[0];
-                        }
-
-                    }
-                    else
-                    {
-                        throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
-                    }
-                }
-
-            }
-            else
-            {
-                throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
-            }
-*/
             parsedCommand = new ParsedCommand
             {
                 Action = Action,

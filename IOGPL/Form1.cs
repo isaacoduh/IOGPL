@@ -104,6 +104,17 @@ namespace IOGPL
             
         }
 
+        /// <summary>
+        /// Handles the KeyPress event for the command text box.
+        /// </summary>
+        /// <param name="sender">The object that raised the event (command text box).</param>
+        /// <param name="e">A KeyPressEventArgs that contains the event data.</param>
+        /// <remarks>
+        /// This method is responsible for processing key presses in the command text box.
+        /// It checks for the Enter key and, if pressed, interprets the entered command and
+        /// executes the corresponding action on the canvas.
+        /// </remarks>
+
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             String errors = "";
@@ -219,29 +230,6 @@ namespace IOGPL
             Refresh();
         }
 
-        private void writeAllToScreen(string[] lines)
-        {
-            bmG.Clear(Color.DarkGray);
-            Font drawFont = new Font("Arial", 6);
-            SolidBrush drawBrush = new SolidBrush(Color.Black);
-
-            //Set string format
-            StringFormat stringFormat = new StringFormat();
-            stringFormat.FormatFlags = StringFormatFlags.NoClip;
-
-            float y = 10; // Initial Y position
-
-            foreach (string line in lines)
-            {
-                // Draw each line at the specified Y position
-                bmG.DrawString(line, drawFont, drawBrush, 10, y, stringFormat);
-                y += drawFont.Height; // Move to the next line
-            }
-
-            Refresh();
-
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
            
@@ -339,16 +327,12 @@ namespace IOGPL
 
         private void runBtn_Click(object sender, EventArgs e)
         {
-            String errors = "";
+            
             if (rTextBox != null)
             {
                 ProcessProgram(rTextBox.Lines);
                 rTextBox.Clear();
                 cmdTxtBox.Clear();
-            }
-            if(errors != null)
-            {
-                writeToScreen(errors);
             }
         }
 
