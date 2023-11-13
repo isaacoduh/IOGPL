@@ -270,7 +270,7 @@ namespace IOGPL
 
         private void ProcessProgram(string[] program)
         {
-            String errors = "";
+            
             CommandParser parser = new CommandParser();
             foreach(string line in program)
             {
@@ -337,14 +337,10 @@ namespace IOGPL
                     }
                 }
                 catch(Exception ex) {
-                    errors += ex.Message;
                 }
             }
 
-            if (errors != "")
-            {
-                writeToScreen(errors);
-            }
+            
 
         }
 
