@@ -279,7 +279,7 @@ namespace IOGPL
         }
 
         /// <summary>
-        /// Sets the color of the pen used for drawing.
+        /// Sets the color of the pen used for drawing.!
         /// </summary>
         /// <param name="color">The name of the color to set.</param>
         public void SetPenColor(string color)
@@ -295,7 +295,14 @@ namespace IOGPL
                 
         }
 
-
+        /// <summary>
+        /// Toggles the fill status for drawing shapes.
+        /// </summary>
+        /// <remarks>
+        /// This method toggles the fill status for drawing shapes on the canvas. 
+        /// If the fill status was false, it sets it to true and initializes a new <see cref="SolidBrush"/> with the current pen color.
+        /// If the fill status was true, it sets it to false.
+        /// </remarks>
         public void SetFillStatus()
         {
             this.fillStatus = !fillStatus;
