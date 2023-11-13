@@ -22,7 +22,7 @@ namespace IOGPL
         public int xBaseCanvasSize, yBaseCanvasSize;
         SolidBrush fillBrush;
         Pen pen;
-        Color penColor;
+        public Color penColor;
         Graphics g, cursorGraphics;
         Form parentForm;
 

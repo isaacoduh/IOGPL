@@ -67,7 +67,7 @@ namespace IOGPL
                     parser.ParseCommand(inputCommand);
                     string action = parser.Action;
                     string[] tokens = parser.Tokens;
-
+                    cmdTxtBox.Text = "";
                    
 
 
