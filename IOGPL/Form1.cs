@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.LinkLabel;
 
 namespace IOGPL
 {
@@ -45,6 +47,61 @@ namespace IOGPL
             canvas = new BaseCanvas(this, Graphics.FromImage(outputBitmap), Graphics.FromImage(cursorBitmap));
             parser = new CommandParser(canvas);
             bmG.Clear(backgroundColor);
+        }
+
+        private void syntaxBtn_Click(object sender, EventArgs e)
+        {
+            bool isOk = false;
+            String errors = "";
+           
+            // check syntax to on command line
+            if (cmdTxtBox.Text != "")
+            {
+                string inputCommand = cmdTxtBox.Text.Trim();
+                CommandParser parser = new CommandParser();
+                try
+                {
+                   isOk =  parser.CheckCommandSyntax(inputCommand);
+
+                }catch(Exception ex)
+                {
+                    errors += ex.Message;
+                    
+                }
+                cmdTxtBox.Clear();
+            } else if(rTextBox.Text != null)
+            {
+                var result = parser.CheckProgramSyntax(rTextBox.Lines);
+                if (result.IsSyntaxValid)
+                {
+                    isOk = true;
+                }
+                else
+                {
+                    string[] errorLines = result.Errors;
+                    string combineErrors = string.Join(Environment.NewLine, errorLines);
+                    writeToScreen(combineErrors);
+
+                }
+                /*try
+                {
+                    
+                } catch(Exception ex)
+                {
+                    errors += ex.Message;
+                }*/
+                rTextBox.Clear();
+            }
+
+            if (isOk)
+            {
+                writeToScreen("Syntax Check Ok");
+            } else {
+                writeToScreen(errors);
+            }
+
+           
+            
         }
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -151,7 +208,7 @@ namespace IOGPL
         private void writeToScreen(String text)
         {
             bmG.Clear(Color.DarkGray);
-            Font drawFont = new Font("Arial", 8);
+            Font drawFont = new Font("Arial", 6);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
 
             //Set string format
@@ -160,6 +217,29 @@ namespace IOGPL
 
             bmG.DrawString(text, drawFont, drawBrush, 10, 10, stringFormat);
             Refresh();
+        }
+
+        private void writeAllToScreen(string[] lines)
+        {
+            bmG.Clear(Color.DarkGray);
+            Font drawFont = new Font("Arial", 6);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+            //Set string format
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.FormatFlags = StringFormatFlags.NoClip;
+
+            float y = 10; // Initial Y position
+
+            foreach (string line in lines)
+            {
+                // Draw each line at the specified Y position
+                bmG.DrawString(line, drawFont, drawBrush, 10, y, stringFormat);
+                y += drawFont.Height; // Move to the next line
+            }
+
+            Refresh();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -173,6 +253,9 @@ namespace IOGPL
             g.DrawImageUnscaled(outputBitmap, 0, 0);
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
+
+       
+
 
         private void ProcessProgram(string[] program)
         {
@@ -310,11 +393,7 @@ namespace IOGPL
             }
         }
 
-        private void syntaxBtn_Click(object sender, EventArgs e)
-        {
-            // check syntax to on command line
-
-        }
+       
     }
 
    
