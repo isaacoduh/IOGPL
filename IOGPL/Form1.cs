@@ -58,6 +58,7 @@ namespace IOGPL
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
+            String errors = "";
             if(e.KeyChar == (char)Keys.Enter)
             {
                 try
@@ -119,9 +120,30 @@ namespace IOGPL
 
                 } catch (Exception ex)
                 {
-
+                    errors += ex.Message;
                 }
+
+                writeToScreen(errors);
             }
+        }
+
+
+        /// <summary>
+        /// Write text to screen. I.E show text on Graphics layout.
+        /// </summary>
+        /// <param name="text"></param>
+        private void writeToScreen(String text)
+        {
+            bmG.Clear(Color.DarkGray);
+            Font drawFont = new Font("Arial", 8);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+            //Set string format
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.FormatFlags = StringFormatFlags.NoClip;
+
+            bmG.DrawString(text, drawFont, drawBrush, 10, 10, stringFormat);
+            Refresh();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -204,7 +226,7 @@ namespace IOGPL
                         throw new InvalidCommandException("Invalid argument entered");
                     }
                 }
-                
+                rTextBox.Clear();
             }
         }
 
