@@ -163,6 +163,18 @@ namespace IOGPL
 
         }
 
+
+        /// <summary>
+        /// Draws a circle on the canvas with the specified radius.
+        /// </summary>
+        /// <param name="radius">The radius of the circle to be drawn.</param>
+        /// <remarks>
+        /// This method draws a circle on the canvas with the specified radius. 
+        /// If the radius is less than 0, it throws a <see cref="GPLException"/> with the message "invalid circle size."
+        /// If the application is in testing mode or no graphics object is available, the circle is not drawn.
+        /// After drawing the circle, it renders the cursor on the screen.
+        /// </remarks>
+        /// <param name="radius">The radius of the circle to be drawn.</param>
         public void Circle(int radius)
         {
             if (radius < 0)
@@ -182,6 +194,20 @@ namespace IOGPL
             RenderCursor();
         }
 
+
+        /// <summary>
+        /// Draws a rectangle on the canvas with the specified width and height.
+        /// </summary>
+        /// <param name="width">The width of the rectangle to be drawn.</param>
+        /// <param name="height">The height of the rectangle to be drawn.</param>
+        /// <remarks>
+        /// This method draws a rectangle on the canvas with the specified width and height.
+        /// If either the width or height is less than 0, it throws a <see cref="GPLException"/> with the message "invalid rectangle size."
+        /// If the application is in testing mode or no graphics object is available, the rectangle is not drawn.
+        /// After drawing the rectangle, it renders the cursor on the screen.
+        /// </remarks>
+        /// <param name="width">The width of the rectangle to be drawn.</param>
+        /// <param name="height">The height of the rectangle to be drawn.</param>
         public void Rectangle(int width, int  height)
         {
             if(width < 0 || height < 0) 
