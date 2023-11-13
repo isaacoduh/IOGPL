@@ -58,6 +58,7 @@
             this.syntaxBtn.TabIndex = 1;
             this.syntaxBtn.Text = "Syntax";
             this.syntaxBtn.UseVisualStyleBackColor = true;
+            this.syntaxBtn.Click += new System.EventHandler(this.syntaxBtn_Click);
             // 
             // pBox
             // 

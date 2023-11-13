@@ -45,15 +45,6 @@ namespace IOGPL
             canvas = new BaseCanvas(this, Graphics.FromImage(outputBitmap), Graphics.FromImage(cursorBitmap));
             parser = new CommandParser(canvas);
             bmG.Clear(backgroundColor);
-
-            /*Command m = new MoveTo(pBox, defaultX, defaultY);
-            m.Execute();*/
-            
-            /*ICommand moveToCommand = new MoveToCommand(pBox, defaultX, defaultY);
-            processor.SetCommand(moveToCommand);
-            processor.ExecuteCommand();*/
-
-
         }
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -61,69 +52,94 @@ namespace IOGPL
             String errors = "";
             if(e.KeyChar == (char)Keys.Enter)
             {
-                try
+                if (cmdTxtBox.Text.Equals("run"))
                 {
-                    string inputCommand = cmdTxtBox.Text.Trim();
-                    CommandParser parser = new CommandParser();
-                    parser.ParseCommand(inputCommand);
-                    string action = parser.Action;
-                    string[] tokens = parser.Tokens;
-                    cmdTxtBox.Text = "";
-                   
-
-
-                    if (parser.Action.Equals("drawTo"))
+                    if(rTextBox != null)
                     {
-                        Command c = new DrawTo(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("moveTo"))
-                    {
-                        Command c = new MoveTo(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("clear"))
-                    {
-                        Command c = new Clear(canvas);
-                        c.Execute();
-                    } else if (parser.Action.Equals("reset"))
-                    {
-                        Command c = new Reset(canvas);
-                        c.Execute();
-                    } else if (parser.Action.Equals("circle"))
-                    {
-                        Command c = new Circle(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("rect"))
-                    {
-                        Command c = new Rect(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("square"))
-                    {
-                        Command c = new Square(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("tri"))
-                    {
-                        Command c = new Triangle(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("pen"))
-                    {
-                        Command c = new PenCommand(canvas, action, tokens);
-                        c.Execute();
-                    } else if (parser.Action.Equals("fill"))
-                    {
-                        Command c = new FillCommand(canvas, action, tokens);
-                        c.Execute();
+                        ProcessProgram(rTextBox.Lines);
+                        rTextBox.Clear();
+                        cmdTxtBox.Clear();
                     }
-                    else
-                    {
-                        throw new InvalidCommandException("Invalid argument entered");
-                    }
-
-                } catch (Exception ex)
+                } else
                 {
-                    errors += ex.Message;
+                    try
+                    {
+                        string inputCommand = cmdTxtBox.Text.Trim();
+                        CommandParser parser = new CommandParser();
+                        parser.ParseCommand(inputCommand);
+                        string action = parser.Action;
+                        string[] tokens = parser.Tokens;
+                        cmdTxtBox.Text = "";
+
+
+
+                        if (parser.Action.Equals("drawTo"))
+                        {
+                            Command c = new DrawTo(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("moveTo"))
+                        {
+                            Command c = new MoveTo(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("clear"))
+                        {
+                            Command c = new Clear(canvas);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("reset"))
+                        {
+                            Command c = new Reset(canvas);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("circle"))
+                        {
+                            Command c = new Circle(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("rect"))
+                        {
+                            Command c = new Rect(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("square"))
+                        {
+                            Command c = new Square(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("tri"))
+                        {
+                            Command c = new Triangle(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("pen"))
+                        {
+                            Command c = new PenCommand(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else if (parser.Action.Equals("fill"))
+                        {
+                            Command c = new FillCommand(canvas, action, tokens);
+                            c.Execute();
+                        }
+                        else
+                        {
+                            throw new InvalidCommandException("Invalid argument entered");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        errors += ex.Message;
+                    }
                 }
 
-                writeToScreen(errors);
+                if(errors != "")
+                {
+                    writeToScreen(errors);
+                }
+                //Refresh();
             }
         }
 
@@ -158,15 +174,15 @@ namespace IOGPL
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
 
-        private void runBtn_Click(object sender, EventArgs e)
+        private void ProcessProgram(string[] program)
         {
-            if(rTextBox != null)
+            String errors = "";
+            CommandParser parser = new CommandParser();
+            foreach(string line in program)
             {
-                CommandParser parser = new CommandParser();
-               
-
-                foreach(string line in rTextBox.Lines)
+                try
                 {
+
                     parser.ParseCommand(line.Trim());
                     string action = parser.Action;
                     string[] tokens = parser.Tokens;
@@ -226,7 +242,30 @@ namespace IOGPL
                         throw new InvalidCommandException("Invalid argument entered");
                     }
                 }
+                catch(Exception ex) {
+                    errors += ex.Message;
+                }
+            }
+
+            if (errors != "")
+            {
+                writeToScreen(errors);
+            }
+
+        }
+
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            String errors = "";
+            if (rTextBox != null)
+            {
+                ProcessProgram(rTextBox.Lines);
                 rTextBox.Clear();
+                cmdTxtBox.Clear();
+            }
+            if(errors != null)
+            {
+                writeToScreen(errors);
             }
         }
 
@@ -269,6 +308,12 @@ namespace IOGPL
                 string fileName = openFileDialog.FileName;
                 LoadProgramFromFile(fileName);
             }
+        }
+
+        private void syntaxBtn_Click(object sender, EventArgs e)
+        {
+            // check syntax to on command line
+
         }
     }
 
