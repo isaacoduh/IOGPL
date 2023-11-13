@@ -120,6 +120,8 @@ namespace IOGPL
             String errors = "";
             if(e.KeyChar == (char)Keys.Enter)
             {
+                // Check if the command entered is only "run" and check if the rich text box 
+                // holding the program is not empty. Then proceed to process the program.
                 if (cmdTxtBox.Text.Equals("run"))
                 {
                     if(rTextBox != null)
@@ -242,8 +244,29 @@ namespace IOGPL
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
 
-       
 
+        /// <summary>
+        /// Processes a program represented as an array of strings.
+        /// </summary>
+        /// <param name="program">Array of strings representing the program to be processed.</param>
+        /// <remarks>
+        /// This method iterates through each line of the program, parses the command using
+        /// the <see cref="CommandParser"/> class, and executes the corresponding command
+        /// on the canvas based on the parsed action and tokens.
+        /// </remarks>
+        /// <param name="program">Array of strings representing the program to be processed.</param>
+        /// <exception cref="InvalidCommandException">Thrown when an invalid command is encountered.</exception>
+        /// <seealso cref="CommandParser"/>
+        /// <seealso cref="DrawTo"/>
+        /// <seealso cref="MoveTo"/>
+        /// <seealso cref="Clear"/>
+        /// <seealso cref="Reset"/>
+        /// <seealso cref="Circle"/>
+        /// <seealso cref="Rect"/>
+        /// <seealso cref="Square"/>
+        /// <seealso cref="Triangle"/>
+        /// <seealso cref="PenCommand"/>
+        /// <seealso cref="FillCommand"/>
 
         private void ProcessProgram(string[] program)
         {
