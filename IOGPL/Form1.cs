@@ -359,6 +359,16 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Saves the program from the RichTextBox to a file.
+        /// </summary>
+        /// <param name="fileName">The name of the file to save the program to.</param>
+        /// <remarks>
+        /// This method writes each line from the <see cref="rTextBox"/> to the specified file.
+        /// </remarks>
+        /// <param name="fileName">The name of the file to save the program to.</param>
+
         private void SaveProgramToFile(string fileName)
         {
             using(StreamWriter sw  = new StreamWriter(fileName))
@@ -370,6 +380,17 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Loads a program from a file into the RichTextBox.
+        /// </summary>
+        /// <param name="fileName">The name of the file to load the program from.</param>
+        /// <remarks>
+        /// This method reads the contents of the specified file and sets it as the text
+        /// of the <see cref="rTextBox"/>.
+        /// </remarks>
+        /// <param name="fileName">The name of the file to load the program from.</param>
+
         private void LoadProgramFromFile(string fileName)
         {
             if(File.Exists(fileName))
@@ -378,6 +399,16 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Event handler for the "Save" button click.
+        /// </summary>
+        /// <param name="sender">The object that raised the event (the "Save" button).</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        /// <remarks>
+        /// Displays a SaveFileDialog to prompt the user for the destination file,
+        /// then calls <see cref="SaveProgramToFile"/> to save the program.
+        /// </remarks>
         private void saveBtn_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -389,6 +420,15 @@ namespace IOGPL
             }
         }
 
+        /// <summary>
+        /// Event handler for the "Load" button click.
+        /// </summary>
+        /// <param name="sender">The object that raised the event (the "Load" button).</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        /// <remarks>
+        /// Displays an OpenFileDialog to prompt the user to select a program file,
+        /// then calls <see cref="LoadProgramFromFile"/> to load the program.
+        /// </remarks>
         private void loadBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
