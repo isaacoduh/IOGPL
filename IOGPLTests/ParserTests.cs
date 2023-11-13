@@ -11,6 +11,9 @@ namespace IOGPLTests
     [TestClass]
     public class ParserTests
     {
+        /// <summary>
+        /// Tests the parsing of a valid "clear" command.
+        /// </summary>
         [TestMethod]
         public void Test_valid_clear_command()
         {
@@ -20,6 +23,9 @@ namespace IOGPLTests
             Assert.AreEqual("clear", parser.Action);
         }
 
+        /// <summary>
+        /// Tests the handling of an invalid "clear" command, expecting an exception of type <see cref="InvalidCommandException"/>.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidCommandException))]
         public void Test_Invalid_clear_command()
@@ -45,6 +51,10 @@ namespace IOGPLTests
             parser.ParseCommand("resett");
         }
 
+
+        /// <summary>
+        /// Tests the handling of an invalid action ("MoveTo") command, expecting an exception of type <see cref="InvalidCommandActionException"/>.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidCommandActionException))]
         public void Test_MoveTo_AsInValidAction()
@@ -54,6 +64,9 @@ namespace IOGPLTests
             parser.ParseCommand("MoveTo 100,100");
         }
 
+        /// <summary>
+        /// Tests the parsing of a valid "moveTo" command.
+        /// </summary>
         [TestMethod]
         public void Test_moveTo_AsValidAction()
         {
@@ -64,6 +77,9 @@ namespace IOGPLTests
             CollectionAssert.AreEqual(new string[] { "100", "100" }, parser.Tokens);
         }
 
+        /// <summary>
+        /// Tests the handling of an invalid "moveTo" command with an invalid token count, expecting an exception of type <see cref="InvalidTokenCountException"/>.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidTokenCountException))]
         public void Test_moveTo_WithInvalidTokenscount() {
