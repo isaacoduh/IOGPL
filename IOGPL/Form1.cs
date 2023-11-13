@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.LinkLabel;
 
 namespace IOGPL
 {
@@ -46,6 +48,72 @@ namespace IOGPL
             parser = new CommandParser(canvas);
             bmG.Clear(backgroundColor);
         }
+
+        private void syntaxBtn_Click(object sender, EventArgs e)
+        {
+            bool isOk = false;
+            String errors = "";
+           
+            // check syntax to on command line
+            if (cmdTxtBox.Text != "")
+            {
+                string inputCommand = cmdTxtBox.Text.Trim();
+                CommandParser parser = new CommandParser();
+                try
+                {
+                   isOk =  parser.CheckCommandSyntax(inputCommand);
+
+                }catch(Exception ex)
+                {
+                    errors += ex.Message;
+                    
+                }
+                cmdTxtBox.Clear();
+            } else if(rTextBox.Text != null)
+            {
+                var result = parser.CheckProgramSyntax(rTextBox.Lines);
+                if (result.IsSyntaxValid)
+                {
+                    isOk = true;
+                }
+                else
+                {
+                    string[] errorLines = result.Errors;
+                    string combineErrors = string.Join(Environment.NewLine, errorLines);
+                    writeToScreen(combineErrors);
+
+                }
+                /*try
+                {
+                    
+                } catch(Exception ex)
+                {
+                    errors += ex.Message;
+                }*/
+                rTextBox.Clear();
+            }
+
+            if (isOk)
+            {
+                writeToScreen("Syntax Check Ok");
+            } else {
+                writeToScreen(errors);
+            }
+
+           
+            
+        }
+
+        /// <summary>
+        /// Handles the KeyPress event for the command text box.
+        /// </summary>
+        /// <param name="sender">The object that raised the event (command text box).</param>
+        /// <param name="e">A KeyPressEventArgs that contains the event data.</param>
+        /// <remarks>
+        /// This method is responsible for processing key presses in the command text box.
+        /// It checks for the Enter key and, if pressed, interprets the entered command and
+        /// executes the corresponding action on the canvas.
+        /// </remarks>
 
         private void cmdTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -151,7 +219,7 @@ namespace IOGPL
         private void writeToScreen(String text)
         {
             bmG.Clear(Color.DarkGray);
-            Font drawFont = new Font("Arial", 8);
+            Font drawFont = new Font("Arial", 6);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
 
             //Set string format
@@ -173,6 +241,9 @@ namespace IOGPL
             g.DrawImageUnscaled(outputBitmap, 0, 0);
             g.DrawImageUnscaled(cursorBitmap, 0, 0);
         }
+
+       
+
 
         private void ProcessProgram(string[] program)
         {
@@ -256,16 +327,12 @@ namespace IOGPL
 
         private void runBtn_Click(object sender, EventArgs e)
         {
-            String errors = "";
+            
             if (rTextBox != null)
             {
                 ProcessProgram(rTextBox.Lines);
                 rTextBox.Clear();
                 cmdTxtBox.Clear();
-            }
-            if(errors != null)
-            {
-                writeToScreen(errors);
             }
         }
 
@@ -310,11 +377,7 @@ namespace IOGPL
             }
         }
 
-        private void syntaxBtn_Click(object sender, EventArgs e)
-        {
-            // check syntax to on command line
-
-        }
+       
     }
 
    

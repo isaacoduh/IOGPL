@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +31,12 @@ namespace IOGPL
         }
 
         public ParsedCommand parsedCommand;
+
+        public class SyntaxCheckResult
+        {
+            public bool IsSyntaxValid { get; set; }
+            public string[] Errors { get; set;}
+        }
 
         public void processCommand() 
         {
@@ -99,6 +107,133 @@ namespace IOGPL
             
         }
 
+        public SyntaxCheckResult CheckProgramSyntax(string[] program)
+        {
+            string[] validActions = { "moveTo", "drawTo", "circle", "rect", "tri", "square", "pen", "fill" };
+            
+            List<string>  errors = new List<string>();
+            try
+            {
+                foreach (string line in program)
+                {
+                    string[] parts = line.Split(' ');
+                    if (parts.Length < 2)
+                    {
+                        if (parts[0] == "clear" || parts[0] == "reset")
+                        {
+                            return new SyntaxCheckResult { IsSyntaxValid = true, Errors = Array.Empty<string>() };
+                        }
+                        else
+                        {
+                            throw new InvalidCommandException("Invalid command format. Only clear or reset can have no tokens");
+                        }
+                    }
+                    else
+                    {
+                        // check if it is a valid action:
+                        bool isValid = IsValidAction(parts[0], validActions);
+                        if (isValid)
+                        {
+                            Action = parts[0];
+
+                            // check if the action while valid also has the required number of tokens.
+                            bool isValidTokensCount = IsValidTokensCount(Action, parts[1].Split(',').Length);
+                            if (isValidTokensCount)
+                            {
+                                return new SyntaxCheckResult { IsSyntaxValid = true, Errors = Array.Empty<string>() }; ;
+
+                            }
+                            else
+                            {
+                                errors.Add($"Invalid tokens count for this action {Action}");
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidCommandActionException("The action supplied is invalid");
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+            }
+            
+            if (errors.Count > 0)
+            {
+                
+                return new SyntaxCheckResult { IsSyntaxValid = false, Errors = errors.ToArray() };
+            }
+
+            return new SyntaxCheckResult { IsSyntaxValid = true, Errors = Array.Empty<string>() };
+
+        }
+
+        public bool CheckCommandSyntax(string command)
+        {
+            string[] validActions = { "moveTo", "drawTo", "circle", "rect", "tri", "square", "pen", "fill" };
+            string[] parts = command.Split(' ');
+
+            if (parts.Length < 2)
+            {
+                if (parts[0] == "clear" || parts[0] == "reset")
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new InvalidCommandException("Invalid command format. Only clear or reset can have no tokens");
+                }
+            }
+            else
+            {
+                // check if it is a valid action:
+                bool isValid = IsValidAction(parts[0], validActions);
+                if (isValid)
+                {
+                    Action = parts[0];
+
+                    // check if the action while valid also has the required number of tokens.
+                    bool isValidTokensCount = IsValidTokensCount(Action, parts[1].Split(',').Length);
+                    if (isValidTokensCount)
+                    {
+                        return true;
+
+                    } else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new InvalidCommandActionException("The action supplied is invalid");
+                }
+
+            }
+        }
+
+
+        /// <summary>
+        /// Parses a command string and extracts the action and tokens.
+        /// </summary>
+        /// <param name="command">The command string to parse.</param>
+        /// <remarks>
+        /// This method analyzes the provided command string, validates its format, and extracts
+        /// the action and tokens. The parsed information is stored in the <see cref="parsedCommand"/>
+        /// property for further use.
+        /// </remarks>
+        /// <exception cref="InvalidCommandException">
+        /// Thrown when the command format is invalid, and only "clear" or "reset" can have no tokens.
+        /// </exception>
+        /// <exception cref="InvalidCommandActionException">
+        /// Thrown when the supplied action is invalid.
+        /// </exception>
+        /// <seealso cref="IsValidAction"/>
+        /// <seealso cref="IsValidTokensCount"/>
+
         public void ParseCommand(string command)
         {
             string[] validActions = { "moveTo", "drawTo", "circle", "rect", "tri", "square", "pen", "fill" };
@@ -136,55 +271,6 @@ namespace IOGPL
 
             }
 
-            /*if(parts.Length == 1 ) {
-                if(parts[0] == "clear" || parts[0] == "reset")
-                {
-                    Action = parts[0];
-                    Tokens = null;
-                } else
-                {
-                    throw new InvalidCommandException($"Invalid command. Only clear or reset can be called without a token list");
-                }
-            }*/
-            /*else if (parts.Length > 1)
-            {
-
-                Action = parts[0];
-                Console.WriteLine($"action {Action}");
-                string[] t = parts[1].Split(',');
-                
-                if (t.Length == 1)
-                {
-                    Tokens = t;
-                }
-                else
-                {
-                    Console.WriteLine(parts[1].Split(',').Length);
-                    if (IsValidCommand(Action, parts[1].Split(',').Length))
-                    {
-
-                        if (parts.Length > 1)
-                        {
-                            Tokens = parts[1].Split(',');
-                        }
-                        else
-                        {
-                            Tokens = new string[0];
-                        }
-
-                    }
-                    else
-                    {
-                        throw new InvalidCommandException($"Invalid command. Expected '{Action}' with the required number of tokens");
-                    }
-                }
-
-            }
-            else
-            {
-                throw new InvalidCommandException("Invalid command format. Expected 'action tokens',");
-            }
-*/
             parsedCommand = new ParsedCommand
             {
                 Action = Action,
