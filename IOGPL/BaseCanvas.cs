@@ -66,6 +66,18 @@ namespace IOGPL
             parentForm.Refresh();
         }
 
+
+        /// <summary>
+        /// Moves the cursor to the specified coordinates.
+        /// </summary>
+        /// <param name="x">The new X-coordinate for the cursor.</param>
+        /// <param name="y">The new Y-coordinate for the cursor.</param>
+        /// <remarks>
+        /// This method sets the cursor position to the specified coordinates (x, y).
+        /// If the application is not in testing mode, it renders the cursor on the screen.
+        /// </remarks>
+        /// <param name="x">The new X-coordinate for the cursor.</param>
+        /// <param name="y">The new Y-coordinate for the cursor.</param>
         public void MoveTo(int x, int y)
         {
             xPosition = x;
@@ -77,6 +89,20 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Draws a line from the current cursor position to the specified target coordinates.
+        /// </summary>
+        /// <param name="tX">The target X-coordinate for the line.</param>
+        /// <param name="tY">The target Y-coordinate for the line.</param>
+        /// <remarks>
+        /// This method draws a line from the current cursor position to the specified target coordinates (tX, tY).
+        /// If the application is not in testing mode and a graphics object is available, it uses the graphics object
+        /// to draw the line. It then updates the cursor position to the target coordinates.
+        /// Finally, if not in testing mode, it renders the cursor on the screen.
+        /// </remarks>
+        /// <param name="tX">The target X-coordinate for the line.</param>
+        /// <param name="tY">The target Y-coordinate for the line.</param>
         public void DrawTo(int tX, int tY)
         {
             // TODO: Implement some check and throw exceptions
