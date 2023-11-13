@@ -242,6 +242,27 @@ namespace IOGPL
             RenderCursor();
         }
 
+        /// <summary>
+        /// Draws a triangle on the canvas using the specified vertex coordinates.
+        /// </summary>
+        /// <param name="x1">The x-coordinate of the first vertex.</param>
+        /// <param name="y1">The y-coordinate of the first vertex.</param>
+        /// <param name="x2">The x-coordinate of the second vertex.</param>
+        /// <param name="y2">The y-coordinate of the second vertex.</param>
+        /// <param name="x3">The x-coordinate of the third vertex.</param>
+        /// <param name="y3">The y-coordinate of the third vertex.</param>
+        /// <remarks>
+        /// This method draws a triangle on the canvas using the specified vertex coordinates.
+        /// If the application is in testing mode or no graphics object is available, the triangle is not drawn.
+        /// If fillStatus is true, the triangle is filled; otherwise, only the triangle outline is drawn.
+        /// After drawing the triangle, it renders the cursor on the screen.
+        /// </remarks>
+        /// <param name="x1">The x-coordinate of the first vertex.</param>
+        /// <param name="y1">The y-coordinate of the first vertex.</param>
+        /// <param name="x2">The x-coordinate of the second vertex.</param>
+        /// <param name="y2">The y-coordinate of the second vertex.</param>
+        /// <param name="x3">The x-coordinate of the third vertex.</param>
+        /// <param name="y3">The y-coordinate of the third vertex.</param>
         public void Triangle(int x1, int y1, int x2, int y2, int x3, int y3)
         {
             if(g != null)
