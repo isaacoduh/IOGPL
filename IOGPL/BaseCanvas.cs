@@ -116,6 +116,15 @@ namespace IOGPL
             }
         }
 
+
+        /// <summary>
+        /// Clears the canvas.
+        /// </summary>
+        /// <remarks>
+        /// This method clears the canvas by setting its content to transparent.
+        /// If the application is in testing mode, the canvas is not cleared.
+        /// After clearing the canvas, it renders the cursor on the screen.
+        /// </remarks>
         public void Clear()
         {
             if(isTestingMode == true)
@@ -131,6 +140,15 @@ namespace IOGPL
             RenderCursor();
         }
 
+
+        /// <summary>
+        /// Resets the canvas and cursor position to their initial state.
+        /// </summary>
+        /// <remarks>
+        /// This method resets the canvas by clearing it and sets the cursor position to the origin (0, 0).
+        /// If the application is in testing mode, the canvas is not reset.
+        /// After resetting the canvas and cursor position, it renders the cursor on the screen.
+        /// </remarks>
         public void Reset()
         {
             if (isTestingMode == true)
@@ -138,8 +156,8 @@ namespace IOGPL
 
             if (g != null)
                 g.Clear(Color.Transparent);
-            xPosition = 25;
-            yPosition=25;
+            xPosition = 0;
+            yPosition=0;
 
             RenderCursor();
 
