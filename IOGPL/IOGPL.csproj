@@ -58,6 +58,7 @@
     <Compile Include="MoveTo.cs" />
     <Compile Include="PenCommand.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Prototype.cs" />
     <Compile Include="Rect.cs" />
     <Compile Include="Reset.cs" />
     <Compile Include="Square.cs" />
