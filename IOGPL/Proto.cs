@@ -10,6 +10,7 @@ namespace IOGPL
 {
     public class Proto
     {
+        BaseCanvas canvas;
         Dictionary<string, int> variables = new Dictionary<string, int>();
         int programCounter = 0;
         int variableCounter = 0;
@@ -17,6 +18,11 @@ namespace IOGPL
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
         public Proto() { }
+
+        public Proto(BaseCanvas canvas)
+        {
+            this.canvas = canvas;
+        }
         public void processProgram(string[] storedProgram)
         {
             foreach(string i in storedProgram)
@@ -36,6 +42,11 @@ namespace IOGPL
                     case "printvars":
                         PrintVariables();
                         break;
+                    case "circle":
+                        Circle circle = new Circle();
+                        circle.Handle(parts, variables, canvas);
+                        break;
+
                     default:
                         if(parts.Contains("=") & command != "var")
                         {

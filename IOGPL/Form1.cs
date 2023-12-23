@@ -346,7 +346,7 @@ namespace IOGPL
 
         private void processStoredProgram(string[] storedProgram)
         {
-            Proto p = new Proto();
+            Proto p = new Proto(canvas);
             p.processProgram(storedProgram);
         }
 
