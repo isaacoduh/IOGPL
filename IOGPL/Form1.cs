@@ -330,7 +330,7 @@ namespace IOGPL
                     {
                         Command c = new FillCommand(canvas, action, tokens);
                         c.Execute();
-                    }
+                    } 
                     else
                     {
                         throw new InvalidCommandException("Invalid argument entered");
@@ -344,12 +344,19 @@ namespace IOGPL
 
         }
 
+        private void processStoredProgram(string[] storedProgram)
+        {
+            Proto p = new Proto();
+            p.processProgram(storedProgram);
+        }
+
         private void runBtn_Click(object sender, EventArgs e)
         {
             
             if (rTextBox != null)
             {
-                ProcessProgram(rTextBox.Lines);
+                //ProcessProgram(rTextBox.Lines);
+                processStoredProgram(rTextBox.Lines);
                 rTextBox.Clear();
                 cmdTxtBox.Clear();
             }

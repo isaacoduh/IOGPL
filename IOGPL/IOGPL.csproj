@@ -35,9 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="pseudocode.txt" />
     <Content Include="Spec.txt" />
+    <Content Include="testProgram.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionParser.cs" />
@@ -58,14 +61,18 @@
     <Compile Include="MoveTo.cs" />
     <Compile Include="PenCommand.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Prototype.cs" />
+    <Compile Include="Proto.cs" />
     <Compile Include="Rect.cs" />
     <Compile Include="Reset.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="t.cs" />
     <Compile Include="Triangle.cs" />
+    <Compile Include="VarCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
+      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
