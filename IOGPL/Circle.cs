@@ -10,6 +10,8 @@ namespace IOGPL
     {
         private int radius;
         private string[] parameters;
+
+        public Circle() { }
         public Circle(BaseCanvas c) : base(c)
         {
         }
@@ -25,6 +27,41 @@ namespace IOGPL
             {
                 this.radius = r;
                 c.Circle(radius);
+            }
+        }
+
+        public void Handle(string[] parts, Dictionary<string, int> variables, BaseCanvas c)
+        {
+            Console.WriteLine($"This has a circle handle");
+            // circle x
+            /*string value = parts[1];
+            if (!string.IsNullOrEmpty(value))
+            {
+                // check if the value is found then print
+                
+            }*/
+            if(parts.Length < 2)
+            {
+                Console.WriteLine("Syntax Error: Circle command is missing a radius value");
+                return;
+            }
+            string varName = parts[1];
+            if(variables.ContainsKey(varName))
+            {
+                int varValue = variables[varName];
+                Console.WriteLine($"Circle with variable: {varName} = {varValue}");
+                this.radius = varValue;
+                c.Circle(radius);
+            } else if(int.TryParse(varName, out int intValue))
+            {
+                Console.WriteLine($"Circle with integer value {intValue}");
+                this.radius = intValue;
+                c.Circle(radius);
+            }
+            else
+            {
+                Console.WriteLine("Syntax error: Invalid circle command value");
+
             }
         }
     }

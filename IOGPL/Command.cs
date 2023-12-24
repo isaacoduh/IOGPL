@@ -22,6 +22,8 @@ namespace IOGPL
         public string Name;
         public string[] Parameters;
 
+        public Command() { }
+
         public Command(BaseCanvas c)
         {
             this.c = c;
