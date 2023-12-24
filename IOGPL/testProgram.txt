@@ -82,3 +82,4 @@ Circle Tests:
 var size = 10
 size = size + 10
 circle size
+circle 10
