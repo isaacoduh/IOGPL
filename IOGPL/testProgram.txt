@@ -83,3 +83,16 @@ var size = 10
 size = size + 10
 circle size
 circle 10
+
+==========================================
+method tests:
+
+var size = 10
+size = size + 10
+circle size
+circle 10
+printvars
+method drawCircle
+circle 50
+endMethod
+call drawCircle
