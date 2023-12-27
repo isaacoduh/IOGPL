@@ -12,8 +12,15 @@ namespace IOGPL
     {
         BaseCanvas canvas;
         Dictionary<string, int> variables = new Dictionary<string, int>();
-        int programCounter = 0;
+        public int programCounter = 0;
         int variableCounter = 0;
+       public  bool methodFlag = false;
+        public bool methodExecuting = false;
+       public int methodCounter = 0;
+        public int saveProgramCounter = 0;
+        public string[] methodNames = new string[100];
+       public  int[] methodLocation = new int[100];
+        bool executeLinesFlag = true;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -32,6 +39,18 @@ namespace IOGPL
                 //split line
                 string[] parts = line.Split(' ');
                 string command = parts[0];
+
+                if (methodFlag)
+                {
+                    Console.WriteLine("Method flag is currently on");
+                    Console.WriteLine("So method should not execute");
+                    //continue;
+                }
+
+                if(executeLinesFlag == false)
+                {
+                    continue;
+                }
                 switch(command)
                 {
                     case "var":
@@ -46,7 +65,25 @@ namespace IOGPL
                         Circle circle = new Circle();
                         circle.Handle(parts, variables, canvas);
                         break;
-
+                    case "method":
+                        MethodCommand methodCommand = new MethodCommand();
+                        methodCommand.Handle(parts, this);
+                        break;
+                    case "endMethod":
+                        EndMethodCommand endMethodCommand = new EndMethodCommand();
+                        endMethodCommand.Handle(command, this);
+                        break;
+                    case "call":
+                        // check for the method
+                        int foundMethod = checkMethod(parts[1]);
+                        if (foundMethod >= 0) {
+                            methodExecuting = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Method Not Found");
+                        }
+                        break;
                     default:
                         if(parts.Contains("=") & command != "var")
                         {
@@ -56,6 +93,18 @@ namespace IOGPL
                         break;
                 }
             }
+        }
+
+        private int checkMethod(string methodName)
+        {
+            for(int i = 0; i < methodCounter; i++)
+            {
+                if (methodNames[i]== methodName)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         public void PrintVariables()
