@@ -12,14 +12,14 @@ namespace IOGPL
     {
         BaseCanvas canvas;
         Dictionary<string, int> variables = new Dictionary<string, int>();
-        int programCounter = 0;
+        public int programCounter = 0;
         int variableCounter = 0;
-        bool methodFlag = false;
-        bool methodExecuting = false;
-        int methodCounter = 0;
-        int saveProgramCounter = 0;
-        string[] methodNames = new string[100];
-        int[] methodLocation = new int[100];
+       public  bool methodFlag = false;
+        public bool methodExecuting = false;
+       public int methodCounter = 0;
+        public int saveProgramCounter = 0;
+        public string[] methodNames = new string[100];
+       public  int[] methodLocation = new int[100];
         bool executeLinesFlag = true;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
@@ -66,47 +66,23 @@ namespace IOGPL
                         circle.Handle(parts, variables, canvas);
                         break;
                     case "method":
-                        Console.WriteLine("Basic Method Line");
-                        // method definition
-                        Console.WriteLine($"Method Name: {parts[1]}");
-                        // set method names
-                        methodNames[methodCounter] = parts[1];
-                        methodLocation[methodCounter++] = programCounter;
-                        methodFlag = true;
-                        Console.WriteLine($"MethodNamescoutner - {parts[1]}");
-                        Console.WriteLine($"Method Location {programCounter}");
-                        Console.WriteLine($"Method Flag at the case: method: {methodFlag}");
+                        MethodCommand methodCommand = new MethodCommand();
+                        methodCommand.Handle(parts, this);
                         break;
                     case "endMethod":
-                        Console.WriteLine("End Method Line");
-                        if (command == "endMethod" && methodExecuting == false)
-                        {
-                            Console.WriteLine($"Endmethod yes, method Executing is false: {methodExecuting}");
-                            methodFlag = false ;
-                        } else if(methodExecuting == true)
-                        {
-                            Console.WriteLine($"Endmethod yes, method Executing is su[[psed to be true: {methodExecuting}");
-                            methodExecuting = false;
-                            programCounter = saveProgramCounter;
-                           
-                        }
-                       
+                        EndMethodCommand endMethodCommand = new EndMethodCommand();
+                        endMethodCommand.Handle(command, this);
                         break;
                     case "call":
-                        Console.WriteLine("Calling Method - " + parts[1]);
                         // check for the method
                         int foundMethod = checkMethod(parts[1]);
                         if (foundMethod >= 0) {
-                            Console.WriteLine($"Method found at positon {foundMethod}");
-                            Console.WriteLine($"Method location is at {methodLocation[foundMethod]}");
                             methodExecuting = true;
-                            
                         }
                         else
                         {
                             Console.WriteLine($"Method Not Found");
                         }
-                        
                         break;
                     default:
                         if(parts.Contains("=") & command != "var")
