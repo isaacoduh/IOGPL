@@ -11,7 +11,7 @@ namespace IOGPL
     public class Proto
     {
         BaseCanvas canvas;
-        Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, int> variables = new Dictionary<string, int>();
         public int programCounter = 0;
         int variableCounter = 0;
        public  bool methodFlag = false;
@@ -20,7 +20,8 @@ namespace IOGPL
         public int saveProgramCounter = 0;
         public string[] methodNames = new string[100];
        public  int[] methodLocation = new int[100];
-        bool executeLinesFlag = true;
+       public bool executeLinesFlag = true;
+        public bool dontExecute = false;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -47,14 +48,15 @@ namespace IOGPL
                     //continue;
                 }
 
-                if(executeLinesFlag == false)
-                {
-                    continue;
-                }
+                
                 switch(command)
                 {
                     case "var":
                         Console.WriteLine($" var {command}");
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
                         VarCommand c = new VarCommand();
                         c.Handle(parts, variables, ref variableCounter);
                         break;
@@ -62,6 +64,10 @@ namespace IOGPL
                         PrintVariables();
                         break;
                     case "circle":
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
                         Circle circle = new Circle();
                         circle.Handle(parts, variables, canvas);
                         break;
@@ -83,6 +89,80 @@ namespace IOGPL
                         {
                             Console.WriteLine($"Method Not Found");
                         }
+                        break;
+                    case "if":
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        IfCommand ifCommand = new IfCommand(this);
+                        ifCommand.Handle(parts);
+                        /*string condition = string.Join(" ", parts.Skip(1)).Trim();
+                        string[] conditionPart = condition.Split(' ');
+                       
+                        int left = 0;
+                        int right = 0;
+                        string comparator = conditionPart[1];
+                        bool  conditionPass = false;
+                        // check if left operand is a string or a valid variable in the variables
+                        if (variables.TryGetValue(conditionPart[0], out int leftValue))
+                        {
+                            left = leftValue;
+                        } else if (int.TryParse(conditionPart[0], out int intLeft))
+                        {
+                            left = intLeft;
+                        }
+
+                        // create a function to do the above
+                        if (variables.TryGetValue(conditionPart[2], out int rightValue))
+                        {
+                            right = rightValue;
+                        } else if (int.TryParse(conditionPart[2], out int intRight))
+                        {
+                            right = intRight;
+                        }
+
+                        switch (comparator)
+                        {
+                            case "<":
+                                Console.WriteLine($"<");
+                                if (left < right)
+                                {
+                                    conditionPass = true;
+                                    Console.WriteLine("True");
+                                }
+                                else
+                                {
+                                    conditionPass = false;
+                                    Console.WriteLine("False");
+                                }
+                                break;
+                            case ">":
+                                Console.WriteLine($">");
+                                Console.WriteLine($"<");
+                                if (left > right)
+                                {
+                                    // let the executing lines flag just continue
+                                    conditionPass = true;
+                                    Console.WriteLine("True");
+                                }
+                                else
+                                {
+                                    conditionPass = false;
+                                    Console.WriteLine("False");
+                                }
+                                break;
+                        }
+
+                        if (!conditionPass)
+                        {
+                            dontExecute = true;
+                        }
+*/
+                        break;
+                    case "endif":
+                        EndIfCommand endIfCommand = new EndIfCommand(this);
+                        endIfCommand.Handle(command);
                         break;
                     default:
                         if(parts.Contains("=") & command != "var")

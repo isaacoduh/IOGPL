@@ -96,3 +96,11 @@ method drawCircle
 circle 50
 endMethod
 call drawCircle
+
+
+==================================================
+if tests:
+var num1 = 30
+if num1 < 100
+circle 30
+endif
