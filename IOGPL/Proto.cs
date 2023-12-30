@@ -11,7 +11,7 @@ namespace IOGPL
     public class Proto
     {
         BaseCanvas canvas;
-        Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, int> variables = new Dictionary<string, int>();
         public int programCounter = 0;
         int variableCounter = 0;
        public  bool methodFlag = false;
@@ -21,7 +21,7 @@ namespace IOGPL
         public string[] methodNames = new string[100];
        public  int[] methodLocation = new int[100];
        public bool executeLinesFlag = true;
-        bool dontExecute = false;
+        public bool dontExecute = false;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -95,11 +95,9 @@ namespace IOGPL
                         {
                             continue;
                         }
-                        Console.WriteLine("if command");
-                        // i need to process condition which is parts[1]
-                        // split the condition part
-
-                        string condition = string.Join(" ", parts.Skip(1)).Trim();
+                        IfCommand ifCommand = new IfCommand(this);
+                        ifCommand.Handle(parts);
+                        /*string condition = string.Join(" ", parts.Skip(1)).Trim();
                         string[] conditionPart = condition.Split(' ');
                        
                         int left = 0;
@@ -160,11 +158,11 @@ namespace IOGPL
                         {
                             dontExecute = true;
                         }
-
+*/
                         break;
                     case "endif":
-                        if (dontExecute == true) dontExecute = false;
-                        Console.WriteLine("end if command");
+                        EndIfCommand endIfCommand = new EndIfCommand(this);
+                        endIfCommand.Handle(command);
                         break;
                     default:
                         if(parts.Contains("=") & command != "var")

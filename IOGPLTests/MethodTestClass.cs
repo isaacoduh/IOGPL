@@ -54,7 +54,7 @@ namespace IOGPLTests
             Assert.IsFalse(proto.methodFlag);
         }
 
-        [TestMethod]
+       // [TestMethod]
         /*public void InvalidMethodName()
         {
             var method = new MethodCommand();
