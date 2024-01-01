@@ -22,6 +22,11 @@ namespace IOGPL
        public  int[] methodLocation = new int[100];
        public bool executeLinesFlag = true;
         public bool dontExecute = false;
+        public bool loopFlag = false;
+        public int loopSize = 0;
+        public int loopCounter = 0;
+        public int loopStart = 0;
+        public int iterations = 0;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -31,8 +36,54 @@ namespace IOGPL
         {
             this.canvas = canvas;
         }
+
         public void processProgram(string[] storedProgram)
         {
+            while(programCounter < storedProgram.Length)
+            {
+                var line = storedProgram[programCounter++];
+                var parts = line.Split(' ');
+                var command = parts[0];
+
+                if(command == "loop")
+                {
+                    iterations = int.Parse(parts[1]);
+                    loopFlag = true;
+                    loopCounter = 0;
+                    loopSize = 0;
+                    loopStart = programCounter;
+                }
+
+                if(command == "circle")
+                {
+                    Console.WriteLine("Simple Circle Encountered");
+                    if (dontExecute == true)
+                    {
+                        continue;
+                    }
+                    Circle circle = new Circle();
+                    circle.Handle(parts, variables, canvas);
+                }
+
+                if(command == "endloop")
+                {
+                    loopSize--;
+                    loopFlag = false;
+                    if(loopCounter++ < iterations)
+                    {
+                        programCounter = loopStart;
+                    }
+                }
+
+                if (loopFlag == true)
+                {
+                    loopSize++;
+                }
+            }
+        }
+        public void processxxProgram(string[] storedProgram)
+        {
+            
             foreach(string i in storedProgram)
             {
                 
@@ -40,6 +91,7 @@ namespace IOGPL
                 //split line
                 string[] parts = line.Split(' ');
                 string command = parts[0];
+                saveProgramCounter = programCounter;
 
                 if (methodFlag)
                 {
@@ -49,7 +101,51 @@ namespace IOGPL
                 }
 
                 
-                switch(command)
+
+                if(command == "loop")
+                {
+                    iterations = int.Parse(parts[1]);
+                    Console.WriteLine($"loop with iterations - {iterations}");
+                    loopFlag = true;
+                    loopCounter = 0;
+                    loopSize = 0;
+                }
+
+                if (command == "circle")
+                {
+                    Console.WriteLine("Simple Circle Encountered");
+                    if (dontExecute == true)
+                    {
+                        continue;
+                    }
+                    Circle circle = new Circle();
+                    circle.Handle(parts, variables, canvas);
+                }
+
+                
+
+                if (command == "endloop")
+                {
+                    loopSize--;
+                    loopFlag = false;
+                    Console.WriteLine("Simple Endloop encountered!");
+                    Console.WriteLine($"Loop size at endloop: {loopSize}");
+                    Console.WriteLine($"At line {line}");
+                    Console.WriteLine($"At programCounter {programCounter}");
+                    if (loopCounter++ < iterations)
+                    {
+                        programCounter = programCounter - loopSize;
+                    }
+                }
+
+                if (loopFlag == true)
+                {
+                    Console.WriteLine("Loop Flag is on");
+                    // Increase size of loop body;
+                    loopSize++;
+                    Console.WriteLine($"Current Loop size in the loop flag truee: {loopSize}");
+                }
+                /*switch(command)
                 {
                     case "var":
                         Console.WriteLine($" var {command}");
@@ -97,72 +193,42 @@ namespace IOGPL
                         }
                         IfCommand ifCommand = new IfCommand(this);
                         ifCommand.Handle(parts);
-                        /*string condition = string.Join(" ", parts.Skip(1)).Trim();
-                        string[] conditionPart = condition.Split(' ');
-                       
-                        int left = 0;
-                        int right = 0;
-                        string comparator = conditionPart[1];
-                        bool  conditionPass = false;
-                        // check if left operand is a string or a valid variable in the variables
-                        if (variables.TryGetValue(conditionPart[0], out int leftValue))
-                        {
-                            left = leftValue;
-                        } else if (int.TryParse(conditionPart[0], out int intLeft))
-                        {
-                            left = intLeft;
-                        }
-
-                        // create a function to do the above
-                        if (variables.TryGetValue(conditionPart[2], out int rightValue))
-                        {
-                            right = rightValue;
-                        } else if (int.TryParse(conditionPart[2], out int intRight))
-                        {
-                            right = intRight;
-                        }
-
-                        switch (comparator)
-                        {
-                            case "<":
-                                Console.WriteLine($"<");
-                                if (left < right)
-                                {
-                                    conditionPass = true;
-                                    Console.WriteLine("True");
-                                }
-                                else
-                                {
-                                    conditionPass = false;
-                                    Console.WriteLine("False");
-                                }
-                                break;
-                            case ">":
-                                Console.WriteLine($">");
-                                Console.WriteLine($"<");
-                                if (left > right)
-                                {
-                                    // let the executing lines flag just continue
-                                    conditionPass = true;
-                                    Console.WriteLine("True");
-                                }
-                                else
-                                {
-                                    conditionPass = false;
-                                    Console.WriteLine("False");
-                                }
-                                break;
-                        }
-
-                        if (!conditionPass)
-                        {
-                            dontExecute = true;
-                        }
-*/
                         break;
                     case "endif":
                         EndIfCommand endIfCommand = new EndIfCommand(this);
                         endIfCommand.Handle(command);
+                        break;
+                    case "loop":
+                        // get the command the iteration
+                       
+                        if (int.TryParse(parts[1], out int intIteration)){
+                            iterations = intIteration;
+                            Console.WriteLine($"Iterations is {iterations}");
+                        }
+                        // set loop flag to on
+                        loopFlag = true;
+                        loopCounter = 0;
+                        Console.WriteLine($"{loopFlag}");
+                        break;
+                    case "endloop":
+                        Console.WriteLine("End loop part!");
+                        // set loop flag to off
+                        loopFlag = false;
+                        //loopCounter++;
+                        Console.WriteLine($"{loopFlag}");
+                        Console.WriteLine("====== Stats ====");
+                        Console.WriteLine($"EndLoop: Iterations - {iterations}");
+                        Console.WriteLine($"EndLoop: ProgramCounter - {programCounter}");
+                        Console.WriteLine($"EndLoop: LoopSize - {loopSize}");
+                        
+                        // check that the total iterations is less than the current thing
+                        if(loopCounter++ < iterations)
+                        {
+                            Console.WriteLine($"Endloop: LoopCounter - {loopCounter}");
+                            Console.WriteLine($"The loopCounter {loopCounter} is less than iterations {iterations} so we might need to go again");
+                            Console.WriteLine($"So the program will be reset to the point {programCounter - loopSize}");
+                            programCounter = programCounter - loopSize;
+                        }
                         break;
                     default:
                         if(parts.Contains("=") & command != "var")
@@ -171,7 +237,7 @@ namespace IOGPL
                             vc.Handle(parts, variables, ref variableCounter, true);
                         }
                         break;
-                }
+                }*/
             }
         }
 
