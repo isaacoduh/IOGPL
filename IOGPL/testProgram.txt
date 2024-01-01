@@ -111,3 +111,11 @@ loop tests:
 loop 2
 circle 10
 endloop
+
+==================================================
+Case: Define A Variable and Use With Commands for Drawing...
+var c = 100
+circle c
+
+=============================
+Case: Define Variables and Use with Move Command

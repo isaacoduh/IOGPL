@@ -45,6 +45,18 @@ namespace IOGPL
                 var parts = line.Split(' ');
                 var command = parts[0];
 
+                if(command == "var")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    VarCommand varCmd = new VarCommand();
+                    varCmd.Handle(parts, variables, ref variableCounter);
+                }
+
+                
+
                 if(command == "loop")
                 {
                     iterations = int.Parse(parts[1]);
@@ -65,7 +77,17 @@ namespace IOGPL
                     circle.Handle(parts, variables, canvas);
                 }
 
-                if(command == "endloop")
+                if (command == "drawTo")
+                {
+                    if (dontExecute == true)
+                    {
+                        continue;
+                    }
+                    DrawTo drawTo = new DrawTo();
+                    drawTo.Handle(parts, variables, canvas);
+                }
+
+                if (command == "endloop")
                 {
                     loopSize--;
                     loopFlag = false;
