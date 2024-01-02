@@ -43,7 +43,7 @@ namespace IOGPL
                 int widthValue = variables[widthVarName];
                 int heightValue = variables[heightVarName];
                 c.Rectangle(widthValue, heightValue);
-            } else if(int.TryParse(widthVarName, out int widthValue) & int.TryParse(heightVarName, out int heightValue)) 
+            } else if(int.TryParse(widthVarName, out int widthValue) && int.TryParse(heightVarName, out int heightValue)) 
             { 
                 c.Rectangle(widthValue, heightValue);
             } else

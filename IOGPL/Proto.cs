@@ -118,6 +118,16 @@ namespace IOGPL
                     square.Handle(parts, variables, canvas);
                 }
 
+                if(command == "tri")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    Triangle tri = new Triangle();
+                    tri.Handle(parts, variables, canvas);
+                }
+
                 if (command == "endloop")
                 {
                     loopSize--;
