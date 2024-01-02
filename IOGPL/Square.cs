@@ -11,6 +11,8 @@ namespace IOGPL
         private int size;
         private string[] parameters;
 
+        public Square() { }
+
         public Square(BaseCanvas c) : base(c)
         {
         }
@@ -26,6 +28,28 @@ namespace IOGPL
             {
                 this.size = s;
                 c.Square(s);
+            }
+        }
+
+        public void Handle(string[] parts, Dictionary<string, int> variables, BaseCanvas c)
+        {
+            if(parts.Length < 2)
+            {
+                Console.WriteLine("Syntax Error: Square command is missing a value");
+            }
+            string varName = parts[1];
+            if(variables.ContainsKey(varName))
+            {
+                int varValue = variables[varName];
+                this.size = varValue;
+                c.Square(size);
+            } else if(int.TryParse(varName, out int intValue))
+            {
+                this.size = intValue;
+                c.Square(size);
+            } else
+            {
+                Console.WriteLine("Syntax Error: Invalid Square Command Value");
             }
         }
     }

@@ -99,13 +99,23 @@ namespace IOGPL
 
                 if(command == "rect")
                 {
-                    Console.WriteLine("Rectangle Command Encountered!");
+                    
                     if(dontExecute == true)
                     {
                         continue;
                     }
                     Rect rect = new Rect();
                     rect.Handle(parts, variables, canvas);
+                }
+
+                if(command == "square")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    Square square = new Square();
+                    square.Handle(parts, variables, canvas);
                 }
 
                 if (command == "endloop")
