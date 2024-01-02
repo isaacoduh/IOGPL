@@ -11,6 +11,8 @@ namespace IOGPL
         private int width;
         private int height;
         private string[] parameters;
+
+        public Rect() { }
         public Rect(BaseCanvas c) : base(c)
         {
         }
@@ -27,6 +29,26 @@ namespace IOGPL
                 this.width = width;
                 this.height = height;
                 c.Rectangle(width, height);
+            }
+        }
+
+        public void Handle(string[] parts, Dictionary<string, int> variables, BaseCanvas c)
+        {
+            
+            string[] dimensions = parts[1].Split(',');
+            string widthVarName = dimensions[0];
+            string heightVarName = dimensions[1];
+            if(variables.ContainsKey(widthVarName) || variables.ContainsKey(heightVarName)) 
+            {
+                int widthValue = variables[widthVarName];
+                int heightValue = variables[heightVarName];
+                c.Rectangle(widthValue, heightValue);
+            } else if(int.TryParse(widthVarName, out int widthValue) & int.TryParse(heightVarName, out int heightValue)) 
+            { 
+                c.Rectangle(widthValue, heightValue);
+            } else
+            {
+                Console.WriteLine("Syntax Error: Invalid Rect Command");
             }
         }
     }
