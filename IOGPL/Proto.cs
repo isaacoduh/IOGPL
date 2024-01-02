@@ -148,6 +148,26 @@ namespace IOGPL
                     fillCmd.Handle(parts, canvas);
                 }
 
+                if(command == "if")
+                {
+                    if(dontExecute == false)
+                    {
+                        continue;
+                    }
+                    IfCommand ifCommand = new IfCommand(this);
+                    ifCommand.Handle(parts);
+                }
+
+                if(command == "endif")
+                {
+                    if(dontExecute == false)
+                    {
+                        continue;
+                    }
+                    EndIfCommand endIfCommand = new EndIfCommand(this);
+                    endIfCommand.Handle(command);
+                }
+
                 if (command == "endloop")
                 {
                     loopSize--;
