@@ -128,6 +128,26 @@ namespace IOGPL
                     tri.Handle(parts, variables, canvas);
                 }
 
+                if(command == "pen")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    PenCommand penCmd = new PenCommand();
+                    penCmd.Handle(parts, canvas);
+                }
+
+                if(command == "fill")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    FillCommand fillCmd = new FillCommand();
+                    fillCmd.Handle(parts, canvas);
+                }
+
                 if (command == "endloop")
                 {
                     loopSize--;

@@ -12,6 +12,7 @@ namespace IOGPL
         private Color color;
         private string[] parameters;
 
+        public PenCommand() { }
         public PenCommand(BaseCanvas c) : base(c)
         {
         }
@@ -27,6 +28,15 @@ namespace IOGPL
             {
                 this.color = Color.FromName(parameters[0]);
                 c.SetPenColor(parameters[0]);
+            }
+        }
+
+        public void Handle(string[] parts, BaseCanvas c)
+        {
+            if(parts.Length > 1)
+            {
+                this.color = Color.FromName(parts[1]);
+                c.SetPenColor(parts[1]);
             }
         }
     }

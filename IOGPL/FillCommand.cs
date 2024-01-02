@@ -9,6 +9,8 @@ namespace IOGPL
     public class FillCommand : Command
     {
         private string[] parameters;
+
+        public FillCommand() { }
         public FillCommand(BaseCanvas c) : base(c)
         {
         }
@@ -24,6 +26,17 @@ namespace IOGPL
             if(parameters.Length == 1)
             {
                 if (parameters[0].Equals("on") || parameters[0].Equals("off"))
+                {
+                    c.SetFillStatus();
+                }
+            }
+        }
+
+        public void Handle(string[] parts, BaseCanvas c)
+        {
+            if(parts.Length > 1)
+            {
+                if (parts[1].Equals("on") || parts[1].Equals("off"))
                 {
                     c.SetFillStatus();
                 }
