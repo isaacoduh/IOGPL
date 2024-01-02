@@ -11,6 +11,8 @@ namespace IOGPL
     public class MoveTo : Command
     {
         private string[] parameters;
+
+        public MoveTo() { }
         public MoveTo(BaseCanvas c) : base(c)
         {
         }
@@ -26,6 +28,25 @@ namespace IOGPL
             if (Parameters.Length == 2 && int.TryParse(Parameters[0], out int x) && int.TryParse(Parameters[1], out int y))
             {
                 c.MoveTo(x, y);
+            }
+        }
+
+        public void Handle(string[] parts, Dictionary<string,int> variables, BaseCanvas c)
+        {
+            string[] coords = parts[1].Split(',');
+            string xVarName = coords[0];
+            string yVarName = coords[1];
+            if(variables.ContainsKey(xVarName) || variables.ContainsKey(yVarName))
+            {
+                int xValue = variables[xVarName];
+                int yValue = variables[yVarName];
+                c.MoveTo(xValue, yValue);
+            } else if (int.TryParse(xVarName, out int xValue) && int.TryParse(yVarName, out int yValue))
+            {
+                c.MoveTo(xValue, yValue);
+            } else
+            {
+                Console.WriteLine("Syntax Error: Invalid MoveTo Command");
             }
         }
     }

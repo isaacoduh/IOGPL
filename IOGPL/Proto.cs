@@ -87,6 +87,16 @@ namespace IOGPL
                     drawTo.Handle(parts, variables, canvas);
                 }
 
+                if(command == "moveTo")
+                {
+                    if(dontExecute == true)
+                    {
+                        continue;
+                    }
+                    MoveTo moveTo = new MoveTo();
+                    moveTo.Handle(parts, variables, canvas);
+                }
+
                 if (command == "endloop")
                 {
                     loopSize--;
