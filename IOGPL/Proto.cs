@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using NCalc;
@@ -12,14 +13,15 @@ namespace IOGPL
     {
         BaseCanvas canvas;
         public Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, string> methodDictionary = new Dictionary<string, string>();
         public int programCounter = 0;
         int variableCounter = 0;
        public  bool methodFlag = false;
         public bool methodExecuting = false;
        public int methodCounter = 0;
         public int saveProgramCounter = 0;
-        public string[] methodNames = new string[100];
-       public  int[] methodLocation = new int[100];
+        public string[] methodNames = new string[3];
+       public  int[] methodLocation = new int[3];
        public bool executeLinesFlag = true;
         public bool dontExecute = false;
         public bool loopFlag = false;
@@ -27,6 +29,7 @@ namespace IOGPL
         public int loopCounter = 0;
         public int loopStart = 0;
         public int iterations = 0;
+        public bool isMethodDefinition = false;
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -45,7 +48,114 @@ namespace IOGPL
                 var parts = line.Split(' ');
                 var command = parts[0];
 
-                if(command == "var")
+                /*if(methodFlag == true)
+                {
+                    continue;
+                }*/
+
+                if(isMethodDefinition == true & command != "endmethod")
+                {
+                    // we are just defining a method
+                    Console.WriteLine("Not Executing as we are just defining a method.....");
+                    continue;
+                }
+
+                if (command == "method")
+                {
+                    // split the parameters into methodname and argument
+                    string methodName = parts[1].Split(',')[0];
+                    string argument = parts[1].Split(',')[1];
+                    Console.WriteLine($"Method Name: {methodName}, Method Argument: {argument}");
+                    // increment method counter
+                    methodNames[methodCounter] = methodName;
+                    methodLocation[methodCounter++] = programCounter;
+                    methodDictionary[methodName] = argument;
+                    methodFlag = true;
+                    isMethodDefinition = true;
+                    
+                    /*if (dontExecute == false)
+                    {
+                        continue;
+                    }
+                    MethodCommand methodCommand = new MethodCommand();
+                    methodCommand.Handle(parts, this);*/
+                }
+
+                if(command == "endmethod" && methodExecuting == false)
+                {
+                    // set method definition to false
+                    methodFlag = true;
+                    isMethodDefinition = false;
+                    Console.WriteLine($"We have come to end method so is method definition is {isMethodDefinition}");
+                }
+
+                if(command == "endmethod" && methodExecuting == true)
+                {
+                    methodExecuting = false;
+                    programCounter = saveProgramCounter;
+                    continue;
+                }
+
+                if(command == "call")
+                {
+                    // check if the method exist
+                    // methodName, x
+                    Console.WriteLine($"Method and Parameter,{parts[1]}");
+                    string methodName = parts[1].Split(',')[0];
+                    string argument = parts[1].Split(',')[1];
+                    Console.WriteLine($"Method {methodName}, Argument:{argument}");
+                    // check if the argument declared is actually available
+
+                    if(resolveVarName(argument) != null)
+                    {
+                        Console.WriteLine($"Argument Exists {resolveVarName(argument)}");
+                    } else
+                    {
+                        Console.WriteLine("Argument is not defined!");
+                    }
+                    int foundMethod = checkMethod(parts[1].Split(',')[0]);
+                    if (foundMethod >= 0)
+                    {
+                        Console.WriteLine($"We found method at {foundMethod}");
+                        saveProgramCounter = programCounter + 1;
+                        programCounter = methodLocation[foundMethod];
+                        Console.WriteLine($"saveProgramCounter = ${saveProgramCounter}");
+                        Console.WriteLine($"the program Counter should go to location - {methodLocation[foundMethod]}");
+                        
+                        Console.WriteLine($"the argument from call is {argument}");
+                        Console.WriteLine($"the value is {variables[argument]}");
+
+                        Console.WriteLine($"the method dictionary for {methodName} is {methodDictionary[methodName]}");
+                        // set variable for that one
+                        variables[methodDictionary[methodName]] = variables[argument];
+                        Console.WriteLine($"Setting {variables[methodDictionary[methodName]]} to {variables[argument]}");
+                        /*string parameterName = parts[1].Split(',')[0];
+                        string variableName = parts[1].Split(',')[1];
+                        Console.WriteLine($"From Method Dictionary: parameterName - {parameterName}");
+                        // find the parameter in the dictionary
+                        if (methodDictionary.ContainsKey(parts[1].Split(',')[0]))
+                        {
+                            string parameterValue = variables[parts[1].Split(',')[1]].ToString();
+                            Console.WriteLine($"{parameterName} should have the value of {parameterValue}");
+                            variables[parameterName] = Convert.ToInt32(parameterValue);
+                            Console.WriteLine($"{parameterName} now has the variable of {variables[parameterName]}");
+                        }*/
+                        /*string p = methodDictionary[parts[1].Split(',')[0]];
+                        Console.WriteLine($"From Method Dictionary: p - {p}");
+                        Console.WriteLine($"{p} should have the value of {variables[parts[1].Split(',')[1]]}");
+                        variables["p"] = variables[parts[1].Split(',')[1]];
+                        Console.WriteLine($"{p} now has the variable of {variables[p]}");*/
+                        // find the value of the defined value
+                        methodExecuting = true;
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"We did not find that method...");
+                    }
+                }
+
+                if (command == "var")
                 {
                     if(dontExecute == true)
                     {
@@ -68,7 +178,6 @@ namespace IOGPL
 
                 if(command == "circle")
                 {
-                    Console.WriteLine("Simple Circle Encountered");
                     if (dontExecute == true)
                     {
                         continue;
@@ -158,6 +267,12 @@ namespace IOGPL
                     ifCommand.Handle(parts);
                 }
 
+                if(command != "var" && parts.Contains("="))
+                {
+                    VarCommand vc = new VarCommand();
+                    vc.Handle(parts, variables, ref variableCounter, true);
+                }
+
                 if(command == "endif")
                 {
                     if(dontExecute == false)
@@ -178,11 +293,84 @@ namespace IOGPL
                     }
                 }
 
+                /*if(command == "method")
+                {
+                    methodNames[methodCounter] = parts[1];
+                    methodLocation[methodCounter++] = programCounter;
+                    methodFlag = true;
+                    isMethodDefinition = true;
+                    *//*if (dontExecute == false)
+                    {
+                        continue;
+                    }
+                    MethodCommand methodCommand = new MethodCommand();
+                    methodCommand.Handle(parts, this);*//*
+                }*/
+
+                /*if(command == "endMethod")
+                {
+                    if (dontExecute == false)
+                    {
+                        continue;
+                    }
+                    EndMethodCommand endMethodCommand = new EndMethodCommand();
+                    endMethodCommand.Handle(command, this);
+                }*/
+                /*if(command == "endMethod" && methodExecuting == false)
+                {
+                    methodFlag = false;
+                }
+
+                if(command == "endMethod" && methodExecuting == true)
+                {
+                    methodExecuting = false;
+                    programCounter = saveProgramCounter;
+                    continue;
+                }*/
+
+                /*if(command == "call")
+                {
+                    if (dontExecute == false)
+                    {
+                        continue;
+                    }
+                    int foundMethod = checkMethod(parts[1]);
+                    if(foundMethod >= 0)
+                    {
+                        saveProgramCounter = programCounter + 1;
+                        programCounter = methodLocation[foundMethod];
+                        methodExecuting = true;
+                        continue;
+                        
+                    } else
+                    {
+                        // Throw Exception
+                        throw new GPLException($"Method with name "+ parts[1] +" Not Found");
+                    }
+                }*/
+
                 if (loopFlag == true)
                 {
                     loopSize++;
                 }
             }
+        }
+
+        private int checkMethod(string methodName)
+        {
+            for (int i = 0; i < methodCounter; i++)
+            {
+                if (methodNames[i] == methodName)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private int resolveVarName(string varName)
+        {
+            return variables[varName];
         }
         public void processxxProgram(string[] storedProgram)
         {
@@ -344,17 +532,7 @@ namespace IOGPL
             }
         }
 
-        private int checkMethod(string methodName)
-        {
-            for(int i = 0; i < methodCounter; i++)
-            {
-                if (methodNames[i]== methodName)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
+       
 
         public void PrintVariables()
         {
