@@ -51,6 +51,7 @@
     <Compile Include="CommandParser.cs" />
     <Compile Include="DrawTo.cs" />
     <Compile Include="EndIfCommand.cs" />
+    <Compile Include="EndLoopCommand.cs" />
     <Compile Include="EndMethodCommand.cs" />
     <Compile Include="FillCommand.cs" />
     <Compile Include="Form1.cs">
@@ -61,6 +62,7 @@
     </Compile>
     <Compile Include="GPLException.cs" />
     <Compile Include="IfCommand.cs" />
+    <Compile Include="LoopCommand.cs" />
     <Compile Include="MethodCommand.cs" />
     <Compile Include="MoveTo.cs" />
     <Compile Include="PenCommand.cs" />

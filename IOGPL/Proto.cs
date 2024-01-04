@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -169,14 +169,28 @@ namespace IOGPL
 
                 if(command == "loop")
                 {
-                    iterations = int.Parse(parts[1]);
+                    LoopCommand loopCmd = new LoopCommand();
+                    loopCmd.Handle(parts, this);
+                   /* iterations = int.Parse(parts[1]);
                     loopFlag = true;
                     loopCounter = 0;
                     loopSize = 0;
-                    loopStart = programCounter;
+                    loopStart = programCounter;*/
                 }
 
-                if(command == "circle")
+                if (command == "endloop")
+                {
+                    EndLoopCommand endLoopCmd = new EndLoopCommand();
+                    endLoopCmd.Handle(this);
+                    /*loopSize--;
+                    loopFlag = false;
+                    if (loopCounter++ < iterations)
+                    {
+                        programCounter = loopStart;
+                    }*/
+                }
+
+                if (command == "circle")
                 {
                     if (dontExecute == true)
                     {
@@ -283,15 +297,7 @@ namespace IOGPL
                     endIfCommand.Handle(command);
                 }
 
-                if (command == "endloop")
-                {
-                    loopSize--;
-                    loopFlag = false;
-                    if(loopCounter++ < iterations)
-                    {
-                        programCounter = loopStart;
-                    }
-                }
+                
 
                 /*if(command == "method")
                 {
