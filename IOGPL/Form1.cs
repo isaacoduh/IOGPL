@@ -347,7 +347,36 @@ namespace IOGPL
         private void processStoredProgram(string[] storedProgram)
         {
             Proto p = new Proto(canvas);
-            p.processProgram(storedProgram);
+            p.analyzeProgram(storedProgram);
+
+            if (!string.IsNullOrEmpty(p.errors))
+            {
+                // There are errors, so display them on the main screen
+                displayErrorsToScreen(p.errors);
+            }
+            else
+            {
+                // No errors, proceed with program execution
+                p.processProgram(storedProgram);
+            }
+        }
+
+        private void displayErrorsToScreen(string text)
+        {
+            // Assuming bmG is your Graphics object associated with the canvas
+            bmG.Clear(Color.DarkGray);
+            Font drawFont = new Font("Arial", 6);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+            // Set string format
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.FormatFlags = StringFormatFlags.NoClip;
+
+            // Draw the text on the canvas
+            bmG.DrawString(text, drawFont, drawBrush, 10, 10, stringFormat);
+
+            // Refresh the canvas
+            Refresh();
         }
 
         private void runBtn_Click(object sender, EventArgs e)
