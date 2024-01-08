@@ -24,7 +24,21 @@ namespace IOGPL
         /// <param name="proto"></param>
         public void Handle(string[] parts, Proto proto)
         {
-            proto.iterations = int.Parse(parts[1]);
+            // check if the iterations is a declared variabl
+            if (int.TryParse(parts[1], out int result))
+            {
+                proto.iterations = result;
+            } else
+            {
+                // find the value in the variables
+                if (proto.variables.ContainsKey(parts[1]))
+                {
+                    proto.iterations = proto.variables[parts[1]];
+                } else
+                {
+                    Console.WriteLine("Basically you are just a very weird student!");
+                }
+            }
             proto.loopFlag = true;
             proto.loopCounter = 0;
             proto.loopSize = 0;
