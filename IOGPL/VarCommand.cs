@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace IOGPL
 {
@@ -96,10 +97,43 @@ namespace IOGPL
             // Print each part
             if(parameters.Contains("="))
             {
-                string varName = parameters[1];
-                string varVal = parameters[3];
+                // check if the value after the = is a variable declared
+                if (int.TryParse(parameters[3], out int result))
+                {
+                    Console.WriteLine("The value is a direct integer");
+                    string varName = parameters[1];
+                    string varVal = parameters[3];
 
-                DeclareVariable(variables, ref variableCounter, varName, varVal);
+                    DeclareVariable(variables, ref variableCounter, varName, varVal);
+                } else
+                {
+                    // declare the variable and then assign the value of the other operand
+                    // check variables contains
+                    if (variables.ContainsKey(parameters[3]))
+                    {
+                        // then the value of x is not defined!
+                        int leftOperand = variables[parameters[3]];
+                        int rightOperand = int.Parse(parameters[5]);
+                        if (parameters[4] == "+")
+                        {
+                            variables[parameters[1]] = leftOperand + rightOperand;
+                        } else if (parameters[4] == "-")
+                        {
+                            variables[parameters[1]] = leftOperand - rightOperand;
+                        } else if (parameters[4] == "*")
+                        {
+                            variables[parameters[1]] = leftOperand * rightOperand;
+                        } else if (parameters[4] == "/")
+                        {
+                            variables[parameters[1]] = leftOperand / rightOperand;
+                        }
+                        
+                    } else
+                    {
+                        Console.WriteLine($"{parameters[3]} is not declared!");
+                    }
+                }
+               
                 //SetVariable(varName, varVal);
             } else if(parameters.Contains("=") && !parameters.Contains("var"))
             {
@@ -141,7 +175,7 @@ namespace IOGPL
                 {
                     Console.WriteLine("Syntax error: Variable not declared");
                 }
-            }
+            } 
         }
 
         /// <summary>

@@ -75,5 +75,42 @@ namespace IOGPLTests
             // Assert
             Assert.AreEqual(11, variables["x"]);
         }
+
+
+        /// <summary>
+        /// Tests the Handle method when evaluating a variable declared with an expression with addition.
+        /// </summary>
+        [TestMethod]
+        public void Handle_EvaluateExpression_withAddition()
+        {
+            VarCommand cmd = new VarCommand();
+            Dictionary<string, int> variables = new Dictionary<string, int> { { "x", 10 } };
+            int vCounter = 1;
+            string[] sampleParameters = { "var", "y", "=", "x", "+", "1" };
+
+            //act
+            cmd.Handle(sampleParameters, variables, ref vCounter);
+
+            // assert
+            Assert.AreEqual(11, variables["y"]);
+        }
+
+        /// <summary>
+        /// Tests the Handle method when evaluating a variable declared with an expression with multiplication.
+        /// </summary>
+        [TestMethod]
+        public void Handle_EvaluateExpression_withMultiplication()
+        {
+            VarCommand cmd = new VarCommand();
+            Dictionary<string, int> variables = new Dictionary<string, int> { { "x", 10 } };
+            int vCounter = 1;
+            string[] sampleParameters = { "var", "y", "=", "x", "*", "9" };
+
+            //act
+            cmd.Handle(sampleParameters, variables, ref vCounter);
+
+            // assert
+            Assert.AreEqual(90, variables["y"]);
+        }
     }
 }
