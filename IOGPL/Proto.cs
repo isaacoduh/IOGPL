@@ -30,6 +30,8 @@ namespace IOGPL
         public int loopStart = 0;
         public int iterations = 0;
         public bool isMethodDefinition = false;
+        public bool isOk = true;
+        public String errors = "";
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -40,7 +42,19 @@ namespace IOGPL
             this.canvas = canvas;
         }
 
-        public void processProgram(string[] storedProgram)
+        private bool checkValidKeyword(string keyWord)
+        {
+            string[] validKeyWords = { "var", "method", "loop", "endloop", "if", "endif", "circle","pen","fill","tri","drawTo","moveTo","rect","square","endmethod","call" };
+            return validKeyWords.Contains(keyWord);
+        }
+
+        private void syntaxReport(string message, string line)
+        {
+            isOk = false;
+            errors += $"Syntax error on line {programCounter}: {message} \n";
+        }
+
+        public void analyzeProgram(string[] storedProgram)
         {
             while(programCounter < storedProgram.Length)
             {
@@ -48,318 +62,427 @@ namespace IOGPL
                 var parts = line.Split(' ');
                 var command = parts[0];
 
-                /*if(methodFlag == true)
+                // declare existing variables
+                if (parts[0] == "var")
                 {
-                    continue;
-                }*/
-
-                if(isMethodDefinition == true & command != "endmethod")
-                {
-                    // we are just defining a method
-                    Console.WriteLine("Not Executing as we are just defining a method.....");
-                    continue;
-                }
-
-                if (command == "method")
-                {
-                    // split the parameters into methodname and argument
-                    string methodName = parts[1].Split(',')[0];
-                    string argument = parts[1].Split(',')[1];
-                    Console.WriteLine($"Method Name: {methodName}, Method Argument: {argument}");
-                    // increment method counter
-                    methodNames[methodCounter] = methodName;
-                    methodLocation[methodCounter++] = programCounter;
-                    methodDictionary[methodName] = argument;
-                    methodFlag = true;
-                    isMethodDefinition = true;
-                    
-                    /*if (dontExecute == false)
+                    if (parts.Length == 4)
                     {
-                        continue;
-                    }
-                    MethodCommand methodCommand = new MethodCommand();
-                    methodCommand.Handle(parts, this);*/
-                }
-
-                if(command == "endmethod" && methodExecuting == false)
-                {
-                    // set method definition to false
-                    methodFlag = true;
-                    isMethodDefinition = false;
-                    Console.WriteLine($"We have come to end method so is method definition is {isMethodDefinition}");
-                }
-
-                if(command == "endmethod" && methodExecuting == true)
-                {
-                    methodExecuting = false;
-                    programCounter = saveProgramCounter;
-                    continue;
-                }
-
-                if(command == "call")
-                {
-                    // check if the method exist
-                    // methodName, x
-                    Console.WriteLine($"Method and Parameter,{parts[1]}");
-                    string methodName = parts[1].Split(',')[0];
-                    string argument = parts[1].Split(',')[1];
-                    Console.WriteLine($"Method {methodName}, Argument:{argument}");
-                    // check if the argument declared is actually available
-
-                    if(resolveVarName(argument) != null)
-                    {
-                        Console.WriteLine($"Argument Exists {resolveVarName(argument)}");
-                    } else
-                    {
-                        Console.WriteLine("Argument is not defined!");
-                    }
-                    int foundMethod = checkMethod(parts[1].Split(',')[0]);
-                    if (foundMethod >= 0)
-                    {
-                        Console.WriteLine($"We found method at {foundMethod}");
-                        saveProgramCounter = programCounter + 1;
-                        programCounter = methodLocation[foundMethod];
-                        Console.WriteLine($"saveProgramCounter = ${saveProgramCounter}");
-                        Console.WriteLine($"the program Counter should go to location - {methodLocation[foundMethod]}");
-                        
-                        Console.WriteLine($"the argument from call is {argument}");
-                        Console.WriteLine($"the value is {variables[argument]}");
-
-                        Console.WriteLine($"the method dictionary for {methodName} is {methodDictionary[methodName]}");
-                        // set variable for that one
-                        variables[methodDictionary[methodName]] = variables[argument];
-                        Console.WriteLine($"Setting {variables[methodDictionary[methodName]]} to {variables[argument]}");
-                        /*string parameterName = parts[1].Split(',')[0];
-                        string variableName = parts[1].Split(',')[1];
-                        Console.WriteLine($"From Method Dictionary: parameterName - {parameterName}");
-                        // find the parameter in the dictionary
-                        if (methodDictionary.ContainsKey(parts[1].Split(',')[0]))
+                        string variableName = parts[1];
+                        int value;
+                        if (!variables.ContainsKey(variableName) && int.TryParse(parts[3], out value))
                         {
-                            string parameterValue = variables[parts[1].Split(',')[1]].ToString();
-                            Console.WriteLine($"{parameterName} should have the value of {parameterValue}");
-                            variables[parameterName] = Convert.ToInt32(parameterValue);
-                            Console.WriteLine($"{parameterName} now has the variable of {variables[parameterName]}");
-                        }*/
-                        /*string p = methodDictionary[parts[1].Split(',')[0]];
-                        Console.WriteLine($"From Method Dictionary: p - {p}");
-                        Console.WriteLine($"{p} should have the value of {variables[parts[1].Split(',')[1]]}");
-                        variables["p"] = variables[parts[1].Split(',')[1]];
-                        Console.WriteLine($"{p} now has the variable of {variables[p]}");*/
-                        // find the value of the defined value
-                        methodExecuting = true;
-                        continue;
+                            variables.Add(variableName, value);
+                        }
+                        else
+                        {
+                            // Handle error: Variable already declared or invalid assignment
+                            string message = $"Invalid variable declaration: {line}";
+                            syntaxReport(message, line);
+                        }
                     }
                     else
                     {
-                        Console.WriteLine($"We did not find that method...");
+                        // Handle error: Invalid variable declaration
+                        string message = $"Invalid variable declaration: {line}";
+                        syntaxReport(message, line);
                     }
                 }
-
-                if (command == "var")
+                else if (parts.Contains("="))
                 {
-                    if(dontExecute == true)
+                    string variableName = parts[0];
+                    if (!variables.ContainsKey(variableName))
                     {
-                        continue;
+                        // Handle error: Variable not declared
+                        string message = $"Unknown Command {parts[0].Trim()}";
+                        syntaxReport(message, line);
                     }
-                    VarCommand varCmd = new VarCommand();
-                    varCmd.Handle(parts, variables, ref variableCounter);
-                }
-
-                
-
-                if(command == "loop")
-                {
-                    LoopCommand loopCmd = new LoopCommand();
-                    loopCmd.Handle(parts, this);
-                   /* iterations = int.Parse(parts[1]);
-                    loopFlag = true;
-                    loopCounter = 0;
-                    loopSize = 0;
-                    loopStart = programCounter;*/
-                }
-
-                if (command == "endloop")
-                {
-                    EndLoopCommand endLoopCmd = new EndLoopCommand();
-                    endLoopCmd.Handle(this);
-                    /*loopSize--;
-                    loopFlag = false;
-                    if (loopCounter++ < iterations)
+                    else
                     {
-                        programCounter = loopStart;
-                    }*/
-                }
-
-                if (command == "circle")
-                {
-                    if (dontExecute == true)
-                    {
-                        continue;
+                        // Handle assignment to existing variable
+                        // Additional logic for expression parsing can be added here
+                        if(parts.Length == 4)
+                        {
+                            string message = $"Unknown Command {parts[0].Trim()}";
+                            syntaxReport(message, line);
+                        }
                     }
-                    Circle circle = new Circle();
-                    circle.Handle(parts, variables, canvas);
+                }
+                else if (!parts.Contains("=") && !checkValidKeyword(command))
+                {
+                    // Handle error: Unknown command
+                    string message = $"Unknown Command {command.Trim()}";
+                    syntaxReport(message, line);
                 }
 
-                if (command == "drawTo")
+                else if (parts[0] == "loop")
                 {
-                    if (dontExecute == true)
+                    int iterationValue;
+                    if (int.TryParse(parts[1], out iterationValue))
                     {
-                        continue;
-                    }
-                    DrawTo drawTo = new DrawTo();
-                    drawTo.Handle(parts, variables, canvas);
-                }
-
-                if(command == "moveTo")
-                {
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    MoveTo moveTo = new MoveTo();
-                    moveTo.Handle(parts, variables, canvas);
-                }
-
-                if(command == "rect")
-                {
-                    
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    Rect rect = new Rect();
-                    rect.Handle(parts, variables, canvas);
-                }
-
-                if(command == "square")
-                {
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    Square square = new Square();
-                    square.Handle(parts, variables, canvas);
-                }
-
-                if(command == "tri")
-                {
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    Triangle tri = new Triangle();
-                    tri.Handle(parts, variables, canvas);
-                }
-
-                if(command == "pen")
-                {
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    PenCommand penCmd = new PenCommand();
-                    penCmd.Handle(parts, canvas);
-                }
-
-                if(command == "fill")
-                {
-                    if(dontExecute == true)
-                    {
-                        continue;
-                    }
-                    FillCommand fillCmd = new FillCommand();
-                    fillCmd.Handle(parts, canvas);
-                }
-
-                if(command == "if")
-                {
-                    if(dontExecute == false)
-                    {
-                        continue;
-                    }
-                    IfCommand ifCommand = new IfCommand(this);
-                    ifCommand.Handle(parts);
-                }
-
-                if(command != "var" && parts.Contains("="))
-                {
-                    VarCommand vc = new VarCommand();
-                    vc.Handle(parts, variables, ref variableCounter, true);
-                }
-
-                if(command == "endif")
-                {
-                    if(dontExecute == false)
-                    {
-                        continue;
-                    }
-                    EndIfCommand endIfCommand = new EndIfCommand(this);
-                    endIfCommand.Handle(command);
-                }
-
-                
-
-                /*if(command == "method")
-                {
-                    methodNames[methodCounter] = parts[1];
-                    methodLocation[methodCounter++] = programCounter;
-                    methodFlag = true;
-                    isMethodDefinition = true;
-                    *//*if (dontExecute == false)
-                    {
-                        continue;
-                    }
-                    MethodCommand methodCommand = new MethodCommand();
-                    methodCommand.Handle(parts, this);*//*
-                }*/
-
-                /*if(command == "endMethod")
-                {
-                    if (dontExecute == false)
-                    {
-                        continue;
-                    }
-                    EndMethodCommand endMethodCommand = new EndMethodCommand();
-                    endMethodCommand.Handle(command, this);
-                }*/
-                /*if(command == "endMethod" && methodExecuting == false)
-                {
-                    methodFlag = false;
-                }
-
-                if(command == "endMethod" && methodExecuting == true)
-                {
-                    methodExecuting = false;
-                    programCounter = saveProgramCounter;
-                    continue;
-                }*/
-
-                /*if(command == "call")
-                {
-                    if (dontExecute == false)
-                    {
-                        continue;
-                    }
-                    int foundMethod = checkMethod(parts[1]);
-                    if(foundMethod >= 0)
-                    {
-                        saveProgramCounter = programCounter + 1;
-                        programCounter = methodLocation[foundMethod];
-                        methodExecuting = true;
-                        continue;
-                        
+                        if(iterationValue < 1)
+                        {
+                            string message = $"Invalid loop iterations";
+                            syntaxReport(message, line);
+                        } 
                     } else
                     {
-                        // Throw Exception
-                        throw new GPLException($"Method with name "+ parts[1] +" Not Found");
+                        if (!variables.ContainsKey(parts[1]))
+                        {
+                            string message = $"iteration value not declared";
+                            syntaxReport(message, line);
+                        }
                     }
-                }*/
-
-                if (loopFlag == true)
-                {
-                    loopSize++;
                 }
+                else if (parts[0] == "call")
+                {
+                    string methodName = parts[1].Split(',')[0];
+                    int foundMethod = checkMethod(parts[1].Split(',')[0]);
+                    if(foundMethod  < 0)
+                    {
+                        string message = $"method with name {methodName} not found";
+                        syntaxReport(message, line);
+                    }
+                }
+
             }
+
+            //ShowErrors();
+        }
+
+        private void ShowErrors()
+        {
+            if (!isOk)
+            {
+                Console.WriteLine("Syntax Errors Found!");
+                Console.WriteLine(errors);
+            }
+        }
+
+        public void processProgram(string[] storedProgram)
+        {
+          // analyzeProgram(storedProgram);
+                while (programCounter < storedProgram.Length && isOk)
+                {
+                    var line = storedProgram[programCounter++];
+                    var parts = line.Split(' ');
+                    var command = parts[0];
+
+                    /*if(methodFlag == true)
+                    {
+                        continue;
+                    }*/
+
+                    if (isMethodDefinition == true & command != "endmethod")
+                    {
+                        // we are just defining a method
+                        Console.WriteLine("Not Executing as we are just defining a method.....");
+                        continue;
+                    }
+
+                    if (command == "method")
+                    {
+                        // split the parameters into methodname and argument
+                        string methodName = parts[1].Split(',')[0];
+                        string argument = parts[1].Split(',')[1];
+                        Console.WriteLine($"Method Name: {methodName}, Method Argument: {argument}");
+                        // increment method counter
+                        methodNames[methodCounter] = methodName;
+                        methodLocation[methodCounter++] = programCounter;
+                        methodDictionary[methodName] = argument;
+                        methodFlag = true;
+                        isMethodDefinition = true;
+
+                        /*if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        MethodCommand methodCommand = new MethodCommand();
+                        methodCommand.Handle(parts, this);*/
+                    }
+
+                    if (command == "endmethod" && methodExecuting == false)
+                    {
+                        // set method definition to false
+                        methodFlag = true;
+                        isMethodDefinition = false;
+                        Console.WriteLine($"We have come to end method so is method definition is {isMethodDefinition}");
+                    }
+
+                    if (command == "endmethod" && methodExecuting == true)
+                    {
+                        methodExecuting = false;
+                        programCounter = saveProgramCounter;
+                        continue;
+                    }
+
+                    if (command == "call")
+                    {
+                        // check if the method exist
+                        // methodName, x
+                        Console.WriteLine($"Method and Parameter,{parts[1]}");
+                        string methodName = parts[1].Split(',')[0];
+                        string argument = parts[1].Split(',')[1];
+                        Console.WriteLine($"Method {methodName}, Argument:{argument}");
+                        // check if the argument declared is actually available
+
+                        if (resolveVarName(argument) != null)
+                        {
+                            Console.WriteLine($"Argument Exists {resolveVarName(argument)}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Argument is not defined!");
+                        }
+                        int foundMethod = checkMethod(parts[1].Split(',')[0]);
+                        if (foundMethod >= 0)
+                        {
+                            Console.WriteLine($"We found method at {foundMethod}");
+                            saveProgramCounter = programCounter + 1;
+                            programCounter = methodLocation[foundMethod];
+                            Console.WriteLine($"saveProgramCounter = ${saveProgramCounter}");
+                            Console.WriteLine($"the program Counter should go to location - {methodLocation[foundMethod]}");
+
+                            Console.WriteLine($"the argument from call is {argument}");
+                            Console.WriteLine($"the value is {variables[argument]}");
+
+                            Console.WriteLine($"the method dictionary for {methodName} is {methodDictionary[methodName]}");
+                            // set variable for that one
+                            variables[methodDictionary[methodName]] = variables[argument];
+                            Console.WriteLine($"Setting {variables[methodDictionary[methodName]]} to {variables[argument]}");
+                            /*string parameterName = parts[1].Split(',')[0];
+                            string variableName = parts[1].Split(',')[1];
+                            Console.WriteLine($"From Method Dictionary: parameterName - {parameterName}");
+                            // find the parameter in the dictionary
+                            if (methodDictionary.ContainsKey(parts[1].Split(',')[0]))
+                            {
+                                string parameterValue = variables[parts[1].Split(',')[1]].ToString();
+                                Console.WriteLine($"{parameterName} should have the value of {parameterValue}");
+                                variables[parameterName] = Convert.ToInt32(parameterValue);
+                                Console.WriteLine($"{parameterName} now has the variable of {variables[parameterName]}");
+                            }*/
+                            /*string p = methodDictionary[parts[1].Split(',')[0]];
+                            Console.WriteLine($"From Method Dictionary: p - {p}");
+                            Console.WriteLine($"{p} should have the value of {variables[parts[1].Split(',')[1]]}");
+                            variables["p"] = variables[parts[1].Split(',')[1]];
+                            Console.WriteLine($"{p} now has the variable of {variables[p]}");*/
+                            // find the value of the defined value
+                            methodExecuting = true;
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"We did not find that method...");
+                        }
+                    }
+
+                    if (command == "var")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        VarCommand varCmd = new VarCommand();
+                        varCmd.Handle(parts, variables, ref variableCounter);
+                    }
+
+
+
+                    if (command == "loop")
+                    {
+                        LoopCommand loopCmd = new LoopCommand();
+                        loopCmd.Handle(parts, this);
+                        /* iterations = int.Parse(parts[1]);
+                         loopFlag = true;
+                         loopCounter = 0;
+                         loopSize = 0;
+                         loopStart = programCounter;*/
+                    }
+
+                    if (command == "endloop")
+                    {
+                        EndLoopCommand endLoopCmd = new EndLoopCommand();
+                        endLoopCmd.Handle(this);
+                        /*loopSize--;
+                        loopFlag = false;
+                        if (loopCounter++ < iterations)
+                        {
+                            programCounter = loopStart;
+                        }*/
+                    }
+
+                    if (command == "circle")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        Circle circle = new Circle();
+                        circle.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "drawTo")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        DrawTo drawTo = new DrawTo();
+                        drawTo.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "moveTo")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        MoveTo moveTo = new MoveTo();
+                        moveTo.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "rect")
+                    {
+
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        Rect rect = new Rect();
+                        rect.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "square")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        Square square = new Square();
+                        square.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "tri")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        Triangle tri = new Triangle();
+                        tri.Handle(parts, variables, canvas);
+                    }
+
+                    if (command == "pen")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        PenCommand penCmd = new PenCommand();
+                        penCmd.Handle(parts, canvas);
+                    }
+
+                    if (command == "fill")
+                    {
+                        if (dontExecute == true)
+                        {
+                            continue;
+                        }
+                        FillCommand fillCmd = new FillCommand();
+                        fillCmd.Handle(parts, canvas);
+                    }
+
+                    if (command == "if")
+                    {
+                        if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        IfCommand ifCommand = new IfCommand(this);
+                        ifCommand.Handle(parts);
+                    }
+
+                    if (command != "var" && parts.Contains("="))
+                    {
+                        VarCommand vc = new VarCommand();
+                        vc.Handle(parts, variables, ref variableCounter, true);
+                    }
+
+                    if (command == "endif")
+                    {
+                        if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        EndIfCommand endIfCommand = new EndIfCommand(this);
+                        endIfCommand.Handle(command);
+                    }
+
+
+
+                    /*if(command == "method")
+                    {
+                        methodNames[methodCounter] = parts[1];
+                        methodLocation[methodCounter++] = programCounter;
+                        methodFlag = true;
+                        isMethodDefinition = true;
+                        *//*if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        MethodCommand methodCommand = new MethodCommand();
+                        methodCommand.Handle(parts, this);*//*
+                    }*/
+
+                    /*if(command == "endMethod")
+                    {
+                        if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        EndMethodCommand endMethodCommand = new EndMethodCommand();
+                        endMethodCommand.Handle(command, this);
+                    }*/
+                    /*if(command == "endMethod" && methodExecuting == false)
+                    {
+                        methodFlag = false;
+                    }
+
+                    if(command == "endMethod" && methodExecuting == true)
+                    {
+                        methodExecuting = false;
+                        programCounter = saveProgramCounter;
+                        continue;
+                    }*/
+
+                    /*if(command == "call")
+                    {
+                        if (dontExecute == false)
+                        {
+                            continue;
+                        }
+                        int foundMethod = checkMethod(parts[1]);
+                        if(foundMethod >= 0)
+                        {
+                            saveProgramCounter = programCounter + 1;
+                            programCounter = methodLocation[foundMethod];
+                            methodExecuting = true;
+                            continue;
+
+                        } else
+                        {
+                            // Throw Exception
+                            throw new GPLException($"Method with name "+ parts[1] +" Not Found");
+                        }
+                    }*/
+
+                    if (loopFlag == true)
+                    {
+                        loopSize++;
+                    }
+                }
+
+            
+
         }
 
         private int checkMethod(string methodName)
