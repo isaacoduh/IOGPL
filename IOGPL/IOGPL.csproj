@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="pseudocode.txt" />
+    <Content Include="santa_icon.ico" />
     <Content Include="Spec.txt" />
     <Content Include="testProgram.txt" />
   </ItemGroup>

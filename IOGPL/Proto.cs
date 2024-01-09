@@ -1,4 +1,5 @@
 ﻿ using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -108,7 +109,70 @@ namespace IOGPL
                     continue;
                 }
 
-                if(command == "while")
+                if(command == "drawicon")
+                {
+                    
+                    // Set the current working directory to the directory where the executable is located
+                    Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+                    // Specify the source file (original location of your image)
+                    string sourceImagePath = Path.Combine("C:\\Users\\IO\\source\\repos\\IOGPL\\IOGPL\\", parts[1].ToString());
+
+                    // Specify the destination file (where you want to copy the image in the executable directory)
+                    string destinationImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, parts[1].ToString());
+
+                    try
+                    {
+                        // Copy the file to the destination
+                        File.Copy(sourceImagePath, destinationImagePath, true);
+
+                        // Now, you can use the destinationImagePath in your program
+                        Console.WriteLine("File copied successfully.");
+                        Icon newIcon = new Icon(sourceImagePath);
+                        int x = 100;
+                        int y = 100;
+                        canvas.CreateIcon(newIcon, x, y);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error copying file: {ex.Message}");
+                    }
+
+
+                    // Set the current working directory to the directory where the executable is located
+                    Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+                    // Rest of your code...
+
+                    
+                    string imageName = "santa_icon.ico";  // Update this with the actual file name
+
+                    // Print the full path for debugging
+                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imageName);
+                    Console.WriteLine("Checking for file: " + imagePath);
+
+                    // Check if the file exists
+                    Console.WriteLine(File.Exists(imagePath) ? "File Exists" : "File does not exist.");
+
+                    /*string imageName = parts[1];
+                    // check if that file exists
+                    Console.WriteLine(File.Exists(imageName.ToString()) ? "File Exists" : "File does not exists.");
+                    // Get the directory where the program is located
+                    string programDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                    // Set the current working directory to the program directory
+                    Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imageName);
+
+                    // Check if the file exists
+                    
+                    Console.WriteLine($"{imagePath}");
+                    Console.WriteLine(File.Exists(imagePath) ? "File Exists" : "File does not exist.");*/
+
+                }
+
+                if (command == "while")
                 {
                     WhileCommand whileCommand = new WhileCommand(this);
                     whileCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
