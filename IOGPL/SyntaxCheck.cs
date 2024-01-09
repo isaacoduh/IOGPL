@@ -124,16 +124,6 @@ namespace IOGPL
                         }
                     }
                 }
-                else if (parts[0] == "call")
-                {
-                    string methodName = parts[1].Split(',')[0];
-                    int foundMethod = checkMethod(parts[1].Split(',')[0]);
-                    if (foundMethod < 0)
-                    {
-                        string message = $"method with name {methodName} not found";
-                        errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                    }
-                }
 
             }
             if (errors.Count > 0)
@@ -157,108 +147,11 @@ namespace IOGPL
 
         private bool checkValidKeyword(string keyWord)
         {
-            string[] validKeyWords = { "var", "method", "loop", "endloop", "if", "endif", "circle", "pen", "fill", "tri", "drawTo", "moveTo", "rect", "square", "endmethod", "call" };
+            string[] validKeyWords = { "var", "method", "loop", "endloop", "if", "endif", "circle", "pen", "fill", "tri", "drawTo", "moveTo", "rect", "square", "endmethod", "call", "while","endwhile" };
             return validKeyWords.Contains(keyWord);
         }
 
-        /*public syntaxCheck checkProgram(string[] storedProgram)
-        {
-            List<string> errors = new List<string>();
-
-            while (programCounter < storedProgram.Length)
-            {
-                var line = storedProgram[programCounter++];
-                var parts = line.Split(' ');
-                var command = parts[0];
-
-                if (parts[0] == "var")
-                {
-                    if (parts.Length == 4)
-                    {
-                        string variableName = parts[1];
-                        int value;
-                        if (!variables.ContainsKey(variableName) && int.TryParse(parts[3], out value))
-                        {
-                            variables.Add(variableName, value);
-                        }
-                        else
-                        {
-                            // Handle error: Variable already declared or invalid assignment
-                            string message = $"Invalid variable declaration: {line}";
-                            errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                        }
-                    }
-                    else
-                    {
-                        // Handle error: Invalid variable declaration
-                        string message = $"Invalid variable declaration: {line}";
-                        errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                    }
-                }
-                else if (parts.Contains("="))
-                {
-                    string variableName = parts[0];
-                    if (!variables.ContainsKey(variableName))
-                    {
-                        // Handle error: Variable not declared
-                        string message = $"Unknown Command {parts[0].Trim()}";
-                        errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                    }
-                    else
-                    {
-                        // Handle assignment to existing variable
-                        // Additional logic for expression parsing can be added here
-                        if (parts.Length == 4)
-                        {
-                            string message = $"Unknown Command {parts[0].Trim()}";
-                            errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                        }
-                    }
-                }
-                else if (!parts.Contains("=") && !checkValidKeyword(command))
-                {
-                    string message = $"Unknown Command {command.Trim()}";
-                    errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                }
-                else if (parts[0] == "loop")
-                {
-                    int iterationValue;
-                    if (int.TryParse(parts[1], out iterationValue))
-                    {
-                        if (iterationValue < 1)
-                        {
-                            string message = $"Invalid loop iterations";
-                            errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                        }
-                    }
-                    else
-                    {
-                        if (!variables.ContainsKey(parts[1]))
-                        {
-                            string message = $"iteration value not declared";
-                            errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                        }
-                    }
-                }
-                else if (parts[0] == "call")
-                {
-                    string methodName = parts[1].Split(',')[0];
-                    int foundMethod = checkMethod(parts[1].Split(',')[0]);
-                    if (foundMethod < 0)
-                    {
-                        string message = $"method with name {methodName} not found";
-                        errors.Add($"Syntax error on line {programCounter}: {message} \n");
-                    }
-                }
-            }
-
-            if (errors.Count > 0)
-            {
-                return new syntaxCheck { IsSyntaxValid = false, Errors = errors.ToArray() };
-            }
-
-            return new syntaxCheck { IsSyntaxValid = true, Errors = Array.Empty<string>() };
-        }*/
+        
 
     }
 }
