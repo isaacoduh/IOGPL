@@ -9,9 +9,11 @@ namespace IOGPL
     /// <summary>
     /// Represents the command handling logic for "if" statements.
     /// </summary>
-    public class IfCommand
+    public class IfCommand : IProgramCommand
     {
         private Proto proto;
+
+        public IfCommand() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IfCommand"/> class.
@@ -27,7 +29,7 @@ namespace IOGPL
         /// Handles the "if" command by evaluating the condition and updating the executeLinesFlag accordingly.
         /// </summary>
         /// <param name="parts">The parts of the command.</param>
-        public void Handle(string[] parts)
+        public void Handle(string[] parts, Dictionary<string, int> variables, Proto proto, ref int variableCounter, BaseCanvas canvas, bool reassignment = false)
         {
             string condition = string.Join(" ", parts.Skip(1)).Trim();
             string[] conditionPart = condition.Split(' ');
@@ -93,5 +95,7 @@ namespace IOGPL
             }
 
         }
+
+        
     }
 }

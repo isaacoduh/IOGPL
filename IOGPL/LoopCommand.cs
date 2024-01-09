@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace IOGPL
 {
 
-    public class LoopCommand
+    public class LoopCommand : IProgramCommand
     {
         /// <summary>
         /// Initializes a new instance of <see cref="LoopCommand"/> class.
@@ -22,7 +22,7 @@ namespace IOGPL
         /// </summary>
         /// <param name="parts"></param>
         /// <param name="proto"></param>
-        public void Handle(string[] parts, Proto proto)
+        public void Handle(string[] parts, Dictionary<string, int> variables, Proto proto, ref int variableCounter, BaseCanvas canvas, bool reassignment = false)
         {
             // check if the iterations is a declared variabl
             if (int.TryParse(parts[1], out int result))

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +20,12 @@ namespace IOGPLTests
             // Arrage
             var proto = new Proto();
             var ifCmd = new IfCommand(proto);
+            int counter = 0;
             proto.variables["num1"] = 10;
 
             // act
-            ifCmd.Handle(new[] { "if", "num1", "<", "100" });
+            //ifCmd.Handle(new[] { "if", "num1", "<", "100" });
+            ifCmd.Handle(new[] { "if", "num1", "<", "100" }, new Dictionary<string, int>(), proto, ref counter, null);
 
             // assert
             Assert.IsFalse(proto.dontExecute);
@@ -36,10 +39,12 @@ namespace IOGPLTests
         {
             var proto = new Proto();
             var ifCmd = new IfCommand(proto);
+            int counter = 0;
 
             proto.variables["num1"] = 150;
 
-            ifCmd.Handle(new[] { "if", "num1", "<", "100" });
+            //ifCmd.Handle(new[] { "if", "num1", "<", "100" });
+            ifCmd.Handle(new[] { "if", "num1", "<", "100" }, new Dictionary<string, int>(), proto, ref counter, null);
 
             // Assert
             Assert.IsTrue(proto.dontExecute);
