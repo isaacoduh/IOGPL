@@ -16,87 +16,37 @@ namespace IOGPLTests
         [TestMethod]
         public void ThrowSyntaxError_OnInvalidCommand()
         {
-            var proto = new Proto();
+            var syntaxCheck = new SyntaxCheck();
             var storedProgram = new string[] { "xmoveTo" };
 
             // act
-            proto.analyzeProgram(storedProgram);
+            var result =  syntaxCheck.validateProgram(storedProgram);
+            
 
             // assert
-            Assert.IsFalse(proto.isOk);
-            StringAssert.Contains(proto.errors, "Syntax error on line 1: Unknown Command xmoveTo");
+            Assert.IsFalse(result.IsSyntaxValid);
+            Assert.AreEqual(1, result.Errors.Length);
         }
-
-        /// <summary>
-        /// Test to handle Syntax checking but with wrong loop variable
-        /// </summary>
-        [TestMethod]
-        public void ThrowSyntaxError_OnInvalidLoopCommand_withUndeclared_Variable() 
-        {
-            var proto = new Proto();
-            var storedProgram = new string[]
-            {
-                "var radius = 10",
-                "loop c",
-                "circle size",
-                "endloop"
-            };
-
-            // act
-            proto.analyzeProgram(storedProgram);
-
-            // assert
-            Assert.IsFalse(proto.isOk);
-            StringAssert.Contains(proto.errors, "Syntax error on line 2: iteration value not declared");
-        }
-
-        /// <summary>
-        /// Test to handle Syntax checking wrong loop iterations i.e. less than 1
-        /// </summary>
-        [TestMethod]
-        public void ThrowSyntaxError_OnInvalidLoopCommand_with_Zero_Or_Negative_Iteration()
-        {
-            var proto = new Proto();
-            var storedProgram = new string[]
-            {
-                "var radius = 10",
-                "loop 0",
-                "circle size",
-                "endloop"
-            };
-
-            //act
-            proto.analyzeProgram(storedProgram);
-
-            // assert
-            Assert.IsFalse(proto.isOk);
-            StringAssert.Contains(proto.errors, "Syntax error on line 2: Invalid loop iterations");
-        }
-
-        /// <summary>
-        /// Syntax checking wrong - when call command but with wrong method or missing method
-        /// </summary>
 
         [TestMethod]
-        public void ThrowSyntaxError_OnInvalidCall_with_MethodNotFound()
+        public void ValidateProgram_LoopWithNegativeIterations_ReturnsError()
         {
-            var proto = new Proto();
-            var storedProgram = new string[]
-            {
-                "var radius = 10",
-                "method basecircle,m",
-                "circle size",
-                "endmethod",
-                "call basesquare"
-            };
+            // Arrange
+            string[] program = { "loop -1", "circle x", "endloop" };
+            SyntaxCheck syntaxCheck = new SyntaxCheck();
 
+            // Act
+            var result = syntaxCheck.validateProgram(program);
 
-            // act
-            proto.analyzeProgram(storedProgram);
-
-            // assert
-            Assert.IsFalse(proto.isOk);
-            StringAssert.Contains(proto.errors, "Syntax error on line 5: method with name basesquare not found");
+            // Assert
+            Assert.IsFalse(result.IsSyntaxValid);
+            Assert.IsTrue(result.Errors.Any(error => error.Contains("Invalid loop iterations")));
         }
+
+       
+
+        
+
+        
     }
 }

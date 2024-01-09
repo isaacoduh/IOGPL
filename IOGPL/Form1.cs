@@ -346,19 +346,26 @@ namespace IOGPL
 
         private void processStoredProgram(string[] storedProgram)
         {
-            Proto p = new Proto(canvas);
-            p.analyzeProgram(storedProgram);
+            //Proto p = new Proto(canvas, bmG, this);
+            Proto p = new Proto(canvas, this, bmG);
+            p.processProgram(storedProgram);
 
-            if (!string.IsNullOrEmpty(p.errors))
+            /*var result = p.checkProgram(storedProgram);
+            if (result.IsSyntaxValid)
             {
-                // There are errors, so display them on the main screen
-                displayErrorsToScreen(p.errors);
+                isOk = true;
+                p.processProgram(storedProgram);
+                Console.WriteLine("This is the path to work!");
             }
             else
             {
-                // No errors, proceed with program execution
-                p.processProgram(storedProgram);
-            }
+                string[] errorLines = result.Errors;
+                string combineErrors = string.Join(Environment.NewLine, errorLines);
+                writeToScreen(combineErrors);
+            }*/
+
+
+
         }
 
         private void displayErrorsToScreen(string text)
