@@ -48,6 +48,7 @@
     <Compile Include="Circle.cs" />
     <Compile Include="Clear.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="CommandFactory.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="DrawTo.cs" />
     <Compile Include="EndIfCommand.cs" />
@@ -62,6 +63,7 @@
     </Compile>
     <Compile Include="GPLException.cs" />
     <Compile Include="IfCommand.cs" />
+    <Compile Include="IProgramCommand.cs" />
     <Compile Include="LoopCommand.cs" />
     <Compile Include="MethodCommand.cs" />
     <Compile Include="MoveTo.cs" />
