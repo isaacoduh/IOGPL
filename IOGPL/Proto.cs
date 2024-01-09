@@ -99,6 +99,21 @@ namespace IOGPL
                     continue;
                 }
 
+                if (command == "if")
+                {
+                    
+                    if (dontExecute == true)
+                    {
+                        continue;
+                    }
+                    Console.WriteLine("...if point");
+                    /*IfCommand ifCommand = new IfCommand(this);
+                    ifCommand.Handle(parts, variables, this, ref variableCounter,canvas, false);*/
+                    CommandFactory factory = new CommandFactory();
+                    IProgramCommand ifCommand = factory.CreateCommand("if");
+                    ifCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
+                }
+
                 if (command == "method")
                 {
                     // split the parameters into methodname and argument
@@ -280,18 +295,7 @@ namespace IOGPL
                     fillCmd.Handle(parts, canvas);
                 }
 
-                if (command == "if")
-                {
-                    if (dontExecute == false)
-                    {
-                        continue;
-                    }
-                    /*IfCommand ifCommand = new IfCommand(this);
-                    ifCommand.Handle(parts, variables, this, ref variableCounter,canvas, false);*/
-                    CommandFactory factory = new CommandFactory();
-                    IProgramCommand ifCommand = factory.CreateCommand("if");
-                    ifCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
-                }
+                
 
                 if (command != "var" && parts.Contains("="))
                 {

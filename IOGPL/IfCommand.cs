@@ -35,8 +35,9 @@ namespace IOGPL
             string[] conditionPart = condition.Split(' ');
             int left = 0;
             int right = 0;
-            string comparator = conditionPart[1];
+            string comparator = conditionPart[1].ToString();
             bool conditionPass = false;
+            Console.WriteLine($"Comparator... {comparator}");
 
             if (proto.variables.TryGetValue(conditionPart[0], out int leftValue))
             {
@@ -64,11 +65,13 @@ namespace IOGPL
                     if (left < right)
                     {
                         conditionPass = true;
+                        proto.dontExecute = true;
                         Console.WriteLine("True");
                     }
-                    else
+                    else if(left > right)
                     {
                         conditionPass = false;
+                        proto.dontExecute = false;
                         Console.WriteLine("False");
                     }
                     break;
@@ -79,17 +82,21 @@ namespace IOGPL
                     {
                         // let the executing lines flag just continue
                         conditionPass = true;
+                        proto.dontExecute = true;
                         Console.WriteLine("True");
                     }
-                    else
+                    else if(left < right)
                     {
                         conditionPass = false;
+                        proto.dontExecute = false;
                         Console.WriteLine("False");
                     }
                     break;
             }
 
-            if (!conditionPass)
+            if(conditionPass == true) {
+                proto.dontExecute = false;
+            } else if (conditionPass == false)
             {
                 proto.dontExecute = true;
             }
