@@ -147,7 +147,7 @@ namespace IOGPL
 
         private bool checkValidKeyword(string keyWord)
         {
-            string[] validKeyWords = { "var", "method", "loop", "endloop", "if", "endif", "circle", "pen", "fill", "tri", "drawTo", "moveTo", "rect", "square", "endmethod", "call" };
+            string[] validKeyWords = { "var", "method", "loop", "endloop", "if", "endif", "circle", "pen", "fill", "tri", "drawTo", "moveTo", "rect", "square", "endmethod", "call", "while","endwhile" };
             return validKeyWords.Contains(keyWord);
         }
 

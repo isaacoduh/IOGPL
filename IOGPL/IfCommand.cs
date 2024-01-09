@@ -37,7 +37,6 @@ namespace IOGPL
             int right = 0;
             string comparator = conditionPart[1].ToString();
             bool conditionPass = false;
-            Console.WriteLine($"Comparator... {comparator}");
 
             if (proto.variables.TryGetValue(conditionPart[0], out int leftValue))
             {

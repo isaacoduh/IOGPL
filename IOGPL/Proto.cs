@@ -34,6 +34,15 @@ namespace IOGPL
         public int loopStart = 0;
         public int iterations = 0;
         public bool isMethodDefinition = false;
+        public bool whileLoopConditionFlag = false;
+        public int whileLoopSize = 0;
+        public int whileLoopCounter = 0;
+        public int whileLoopStart = 0;
+        public int whileLoopIterations = 0;
+        public bool WhileConditionComplete = true;
+        public bool whileConditionMet = true;
+        public int whileLoopLimit = 0;
+        public string whileLoopStarter = "";
         /// <summary>
         /// This class will be the sandbox for the nextpart of the application
         /// </summary>
@@ -97,6 +106,18 @@ namespace IOGPL
                     // we are just defining a method
                     Console.WriteLine("Not Executing as we are just defining a method.....");
                     continue;
+                }
+
+                if(command == "while")
+                {
+                    WhileCommand whileCommand = new WhileCommand(this);
+                    whileCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
+                }
+
+                if(command == "endwhile")
+                {
+                    EndWhileCommand endWhileCommand = new EndWhileCommand();
+                    endWhileCommand.Handle(this);
                 }
 
                 if (command == "if")
