@@ -76,6 +76,7 @@
     <Compile Include="Proto.cs" />
     <Compile Include="Rect.cs" />
     <Compile Include="Reset.cs" />
+    <Compile Include="Rotate.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="SyntaxCheck.cs" />
     <Compile Include="t.cs" />

@@ -116,6 +116,12 @@ namespace IOGPL
 
                 }
 
+                if(command == "rotate")
+                {
+                    Rotate rotate = new Rotate(this);
+                    rotate.Handle(parts, variables, this, ref variableCounter, canvas, false);
+                }
+
                 if (command == "while")
                 {
                     WhileCommand whileCommand = new WhileCommand(this);

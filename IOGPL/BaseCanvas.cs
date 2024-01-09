@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -300,6 +301,27 @@ namespace IOGPL
         {
             g.DrawIcon(icon, x, y);
             RenderCursor();
+        }
+
+        public void DrawRotatedRectangle(int x, int y, int width, int height, float angle)
+        {
+            if(isTestingMode == false)
+            {
+                Rectangle rectangle = new Rectangle(x,y,width,height);
+                using(Matrix matrix = new Matrix())
+                {
+                    matrix.RotateAt(angle, new Point(x + width / 2, y + height / 2));
+                    g.Transform = matrix;
+
+                    // Draw the rotated rectangle
+                    g.DrawRectangle(Pens.Black, rectangle);
+
+                    // Reset the transformation
+                    g.ResetTransform();
+                }
+                RenderCursor();
+            }
+        
         }
 
         /// <summary>
