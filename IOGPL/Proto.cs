@@ -187,8 +187,10 @@ namespace IOGPL
 
                 if (command == "loop")
                 {
-                    LoopCommand loopCmd = new LoopCommand();
-                    loopCmd.Handle(parts, this);
+                    
+                    CommandFactory factory = new CommandFactory();
+                    IProgramCommand loopCommand = factory.CreateCommand("loop");
+                    loopCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
                 }
 
                 if (command == "endloop")

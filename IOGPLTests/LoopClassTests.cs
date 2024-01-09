@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using IOGPL;
@@ -19,10 +21,11 @@ namespace IOGPLTests
             // arrange
             var proto = new Proto();
             var loopCmd = new LoopCommand();
+            int counter = 0;
             string[] parts = { "loop", "9" };
 
             // act
-            loopCmd.Handle(parts, proto);
+            loopCmd.Handle(parts, new Dictionary<string, int>(), proto, ref counter, null);
 
             // assert
             Assert.AreEqual(9, proto.iterations);
@@ -40,11 +43,12 @@ namespace IOGPLTests
         {
             var proto = new Proto();
             var loopCmd = new LoopCommand();
+            int counter = 0;
             proto.variables["i"] = 10;
             string[] parts = { "loop", "i" };
 
             // act
-            loopCmd.Handle(parts, proto);
+            loopCmd.Handle(parts, new Dictionary<string, int>(), proto, ref counter, null);
 
             // assert
             Assert.AreEqual(10, proto.iterations);
