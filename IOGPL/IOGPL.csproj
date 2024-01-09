@@ -38,7 +38,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="christmas_tree_icon.ico" />
     <Content Include="pseudocode.txt" />
+    <Content Include="santa_icon.ico" />
     <Content Include="Spec.txt" />
     <Content Include="testProgram.txt" />
   </ItemGroup>
@@ -63,6 +65,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GPLException.cs" />
+    <Compile Include="IconCommand.cs" />
     <Compile Include="IfCommand.cs" />
     <Compile Include="IProgramCommand.cs" />
     <Compile Include="LoopCommand.cs" />

@@ -1,4 +1,5 @@
 ﻿ using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -108,7 +109,14 @@ namespace IOGPL
                     continue;
                 }
 
-                if(command == "while")
+                if(command == "drawicon")
+                {
+                    IconCommand iconCommand = new IconCommand(this);
+                    iconCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);
+
+                }
+
+                if (command == "while")
                 {
                     WhileCommand whileCommand = new WhileCommand(this);
                     whileCommand.Handle(parts, variables, this, ref variableCounter, canvas, false);

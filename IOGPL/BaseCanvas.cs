@@ -164,6 +164,7 @@ namespace IOGPL
         }
 
 
+
         /// <summary>
         /// Draws a circle on the canvas with the specified radius.
         /// </summary>
@@ -293,6 +294,12 @@ namespace IOGPL
                 }
             }
                 
+        }
+
+        public void CreateIcon(Icon icon, int x,  int y)
+        {
+            g.DrawIcon(icon, x, y);
+            RenderCursor();
         }
 
         /// <summary>
